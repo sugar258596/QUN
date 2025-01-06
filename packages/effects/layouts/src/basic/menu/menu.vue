@@ -42,3 +42,5 @@ function handleMenuOpen(key: string, path: string[]) {
     @select="handleMenuSelect"
   />
 </template>
+
+<style scoped lang="scss"></style>

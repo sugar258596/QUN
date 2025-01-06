@@ -124,6 +124,7 @@ watch(
 
 <template>
   <BasicLayout @clear-preferences-and-logout="handleLogout">
+    <!-- 用户头像 -->
     <template #user-dropdown>
       <UserDropdown
         :avatar
@@ -134,6 +135,7 @@ watch(
         @logout="handleLogout"
       />
     </template>
+    <!-- 消息代办 -->
     <template #notification>
       <Notification
         :dot="showDot"
@@ -144,6 +146,7 @@ watch(
     </template>
     <template #extra>
       <AuthenticationLoginExpiredModal
+        v-if="false"
         v-model:open="accessStore.loginExpired"
         :avatar
       >
@@ -151,7 +154,7 @@ watch(
       </AuthenticationLoginExpiredModal>
     </template>
     <template #lock-screen>
-      <LockScreen :avatar @to-login="handleLogout" />
+      <LockScreen :avatar @to-login="handleLogout" v-if="false" />
     </template>
   </BasicLayout>
 </template>

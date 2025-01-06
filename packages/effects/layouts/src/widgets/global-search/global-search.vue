@@ -133,17 +133,19 @@ onMounted(() => {
       </template>
     </Modal>
     <div
-      class="md:bg-accent group flex h-8 cursor-pointer items-center gap-3 rounded-2xl border-none bg-none px-2 py-0.5 outline-none"
+      class="md:bg-accent group flex h-8 w-[200px] cursor-pointer items-center justify-between gap-3 rounded-2xl border-none bg-none px-2 py-0.5 outline-none"
       @click="toggleOpen()"
     >
-      <Search
-        class="text-muted-foreground group-hover:text-foreground size-4 group-hover:opacity-100"
-      />
-      <span
-        class="text-muted-foreground group-hover:text-foreground hidden text-xs duration-300 md:block"
-      >
-        {{ $t('ui.widgets.search.title') }}
-      </span>
+      <div class="flex gap-3">
+        <Search
+          class="text-muted-foreground group-hover:text-foreground size-4 group-hover:opacity-100"
+        />
+        <span
+          class="text-muted-foreground group-hover:text-foreground hidden text-xs duration-300 md:block"
+        >
+          {{ $t('ui.widgets.search.title') }}
+        </span>
+      </div>
       <span
         v-if="enableShortcutKey"
         class="bg-background border-foreground/60 text-muted-foreground group-hover:text-foreground relative hidden rounded-sm rounded-r-xl px-1.5 py-1 text-xs leading-none group-hover:opacity-100 md:block"

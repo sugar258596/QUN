@@ -97,6 +97,12 @@ const leftSlots = computed(() => {
       name: 'refresh',
     });
   }
+  if (preferences.widget.globalSearch) {
+    list.push({
+      index: 0,
+      name: 'global-search',
+    });
+  }
 
   Object.keys(slots).forEach((key) => {
     const name = key.split('-');
@@ -123,6 +129,14 @@ function clearPreferencesAndLogout() {
           <RotateCw class="size-4" />
         </VbenIconButton>
       </template>
+      <!-- 搜索 -->
+      <template v-if="slot.name === 'global-search'">
+        <GlobalSearch
+          :enable-shortcut-key="globalSearchShortcutKey"
+          :menus="accessStore.accessMenus"
+          class="mr-1 sm:mr-4"
+        />
+      </template>
     </slot>
   </template>
   <div class="flex-center hidden lg:block">
@@ -140,29 +154,26 @@ function clearPreferencesAndLogout() {
   >
     <slot name="menu"></slot>
   </div>
+  <!-- 控制区域图 -->
   <div class="flex h-full min-w-0 flex-shrink-0 items-center">
     <template v-for="slot in rightSlots" :key="slot.name">
       <slot :name="slot.name">
-        <template v-if="slot.name === 'global-search'">
-          <GlobalSearch
-            :enable-shortcut-key="globalSearchShortcutKey"
-            :menus="accessStore.accessMenus"
-            class="mr-1 sm:mr-4"
-          />
-        </template>
-
-        <template v-else-if="slot.name === 'preferences'">
+        <!-- 设置 -->
+        <template v-if="slot.name === 'preferences'">
           <PreferencesButton
             class="mr-1"
             @clear-preferences-and-logout="clearPreferencesAndLogout"
           />
         </template>
+        <!-- 主题切换 -->
         <template v-else-if="slot.name === 'theme-toggle'">
           <ThemeToggle class="mr-1 mt-[2px]" />
         </template>
+        <!-- 语言切换 -->
         <template v-else-if="slot.name === 'language-toggle'">
           <LanguageToggle class="mr-1" />
         </template>
+        <!-- 全屏 -->
         <template v-else-if="slot.name === 'fullscreen'">
           <VbenFullScreen class="mr-1" />
         </template>

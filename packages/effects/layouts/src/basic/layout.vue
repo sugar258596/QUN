@@ -184,6 +184,7 @@ const headerSlots = computed(() => {
     :header-visible="preferences.header.enable"
     :is-mobile="preferences.app.isMobile"
     :layout="layout"
+    :header-height="80"
     :sidebar-collapse="preferences.sidebar.collapsed"
     :sidebar-collapse-show-title="preferences.sidebar.collapsedShowTitle"
     :sidebar-enable="sidebarVisible"
@@ -245,7 +246,7 @@ const headerSlots = computed(() => {
             :menus="wrapperMenus(headerMenus)"
             :rounded="isMenuRounded"
             :theme="headerTheme"
-            class="w-full"
+            class="deep w-full"
             mode="horizontal"
             @select="handleMenuSelect"
           />
@@ -353,3 +354,11 @@ const headerSlots = computed(() => {
     </template>
   </VbenAdminLayout>
 </template>
+
+<style scoped lang="scss">
+.deep {
+  :deep(.light.vben-menu-item) {
+    --menu-item-color: #fff;
+  }
+}
+</style>
