@@ -6,6 +6,13 @@ interface AnalysisOverviewItem {
   totalTitle: string;
   totalValue: number;
   value: number;
+  unit?: string;
+}
+
+interface AnalysisInformationitem {
+  title: string;
+  value: number;
+  [key: string]: any;
 }
 
 interface WorkbenchProjectItem {
@@ -40,6 +47,7 @@ interface WorkbenchQuickNavItem {
 }
 
 export type {
+  AnalysisInformationitem,
   AnalysisOverviewItem,
   WorkbenchProjectItem,
   WorkbenchQuickNavItem,
