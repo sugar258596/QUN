@@ -13,6 +13,7 @@ import {
   AnalysisChartsTabs,
   AnalysisInformation,
   AnalysisOverview,
+  AnalyticsVisitsChech,
   WorkbenchTodo,
 } from '@vben/common-ui';
 import {
@@ -24,7 +25,6 @@ import {
 
 import AnalyticsTrends from './analytics-trends.vue';
 import AnalyticsVisitsData from './analytics-visits-data.vue';
-import AnalyticsVisitsSales from './analytics-visits-sales.vue';
 import AnalyticsVisitsSource from './analytics-visits-source.vue';
 import AnalyticsVisits from './analytics-visits.vue';
 
@@ -141,13 +141,38 @@ const chartTabs: TabOption[] = [
     value: 'visits',
   },
 ];
+
+const check: AnalysisInformationitem[] = [
+  {
+    title: '入账',
+    value: 200,
+    color: 'text-green-500',
+  },
+  {
+    title: '出账',
+    value: 100,
+    color: 'text-red-500',
+  },
+  {
+    title: '用户提现',
+    value: 100,
+    showDot: true,
+    color: 'before:bg-blue-500',
+  },
+  {
+    title: '代理分润',
+    value: 100,
+    showDot: true,
+    color: 'before:bg-purple-500',
+  },
+];
 </script>
 
 <template>
   <div class="p-5">
     <AnalysisOverview :items="overviewItems" />
     <AnalysisInformation :items="InformationItems" class="mt-5" />
-    <div class="flex gap-4">
+    <div class="gap-4 xl:flex">
       <div class="grow">
         <AnalysisChartsTabs :tabs="chartTabs" class="mt-5">
           <template #trends>
@@ -157,26 +182,28 @@ const chartTabs: TabOption[] = [
             <AnalyticsVisits />
           </template>
         </AnalysisChartsTabs>
-        <div class="mt-5 w-full md:flex">
+        <div class="mt-5 w-full gap-4 md:flex">
           <AnalysisChartCard
-            class="mt-5 md:mr-4 md:mt-0 md:w-1/3"
+            class="mt-5 md:mt-0 md:w-1/2 xl:w-1/2"
             title="访问数量"
           >
             <AnalyticsVisitsData />
           </AnalysisChartCard>
-          <AnalysisChartCard
-            class="mt-5 md:mr-4 md:mt-0 md:w-1/3"
-            title="访问来源"
-          >
-            <AnalyticsVisitsSource />
-          </AnalysisChartCard>
-          <AnalysisChartCard class="mt-5 md:mt-0 md:w-1/3" title="访问来源">
-            <AnalyticsVisitsSales />
+          <AnalysisChartCard class="mt-5 md:mt-0 md:w-1/2 xl:w-1/2" title="">
+            <AnalyticsVisitsSource>
+              <template #echar-right>
+                <AnalyticsVisitsChech :items="check" />
+              </template>
+            </AnalyticsVisitsSource>
           </AnalysisChartCard>
         </div>
       </div>
 
-      <WorkbenchTodo :items="todoItems" class="mt-5" title="待办事项" />
+      <WorkbenchTodo
+        :items="todoItems"
+        class="mt-5 w-full xl:w-1/3 2xl:w-1/4"
+        title="待办事项"
+      />
     </div>
   </div>
 </template>

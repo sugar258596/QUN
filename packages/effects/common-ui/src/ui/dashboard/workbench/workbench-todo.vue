@@ -46,15 +46,17 @@ withDefaults(defineProps<Props>(), {
               </p>
               <!-- eslint-disable vue/no-v-html -->
               <p
-                class="text-foreground/80 *:text-primary mt-1 truncate text-xs leading-5"
+                class="text-foreground/80 *:text-primary mt-1 line-clamp-2 text-ellipsis text-xs leading-5"
                 v-html="item.content"
               ></p>
+              <div
+                class="hidden h-full shrink-0 sm:flex sm:flex-col sm:items-end"
+              >
+                <span class="text-foreground/80 text-xs leading-6">
+                  {{ item.date }}
+                </span>
+              </div>
             </div>
-          </div>
-          <div class="hidden h-full shrink-0 sm:flex sm:flex-col sm:items-end">
-            <span class="text-foreground/80 mt-6 text-xs leading-6">
-              {{ item.date }}
-            </span>
           </div>
         </li>
       </ul>
