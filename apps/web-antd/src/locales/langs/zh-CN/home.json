@@ -1,0 +1,45 @@
+{
+  "title": "首页",
+  "user": {
+    "user": "用户",
+    "userManagement": "用户管理",
+    "userList": "用户列表",
+    "messageManagement": "消息管理",
+    "consumptionRanking": "消费排行",
+    "rechargeRecord": "充值记录",
+    "leaveMessageManagement": "留言管理",
+    "entryRecord": "登录记录",
+    "behaviorLog": "行为日志",
+    "membershipManagement": "会员管理"
+  },
+  "order": {
+    "order": "订单",
+    "orderManagement": "订单管理",
+    "unclaimedParcel": "无主包裹",
+    "containerOrder": "箱单订单",
+    "lotNumberList": "批号列表",
+    "postingManagement": "晒单管理",
+    "userPosting": "用户晒单",
+    "releaseInformation": "发布信息"
+  },
+  "statistics": {
+    "statistics": "统计",
+    "statisticsManagement": "统计管理"
+  },
+  "stash": {
+    "stash": "仓库",
+    "stashManagement": "仓库管理"
+  },
+  "service": {
+    "service": "客服",
+    "serviceManagement": "客服管理"
+  },
+  "system": {
+    "system": "系统",
+    "systemManagement": "系统管理"
+  },
+  "data": {
+    "data": "数据",
+    "dataManagement": "数据管理"
+  }
+}
