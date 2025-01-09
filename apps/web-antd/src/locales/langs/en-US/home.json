@@ -1,45 +1,46 @@
 {
-  "data": {
-    "data": "Data",
-    "dataManagement": "Data Management"
+  "title": "Home",
+  "user": {
+    "user": "User",
+    "userManagement": "User Management",
+    "userList": "User List",
+    "messageManagement": "Message Management",
+    "consumptionRanking": "Consumption Ranking",
+    "rechargeRecord": "Recharge Record",
+    "leaveMessageManagement": "Leave Message Management",
+    "entryRecord": "Login Record",
+    "behaviorLog": "Behavior Log",
+    "membershipManagement": "Membership Management"
   },
   "order": {
-    "containerOrder": "Container order",
-    "lotNumberList": "Lot Number List",
     "order": "Order",
     "orderManagement": "Order Management",
-    "postingManagement": "Posting Management",
-    "releaseInformation": "Release Information",
     "unclaimedParcel": "Unclaimed Parcel",
-    "userPosting": "User Posting"
-  },
-  "service": {
-    "service": "Customer Service",
-    "serviceManagement": "Customer Service Management"
-  },
-  "stash": {
-    "stash": "Warehouse",
-    "stashManagement": "Warehouse Management"
+    "bulkOrder": "Bulk Order",
+    "containerOrder": "Container Order",
+    "lotNumberList": "Lot Number List",
+    "postingManagement": "Posting Management",
+    "userPosting": "User Posting",
+    "releaseInformation": "Release Information"
   },
   "statistics": {
     "statistics": "Statistics",
     "statisticsManagement": "Statistics Management"
   },
+  "stash": {
+    "stash": "Warehouse",
+    "stashManagement": "Warehouse Management"
+  },
+  "service": {
+    "service": "Customer Service",
+    "serviceManagement": "Customer Service Management"
+  },
   "system": {
     "system": "System",
     "systemManagement": "System Management"
   },
-  "title": "Home",
-  "user": {
-    "behaviorLog": "Behavior Log",
-    "consumptionRanking": "Consumption Ranking",
-    "entryRecord": "Login Record",
-    "leaveMessageManagement": "Leave Message Management",
-    "membershipManagement": "Membership Management",
-    "messageManagement": "Message Management",
-    "rechargeRecord": "Recharge Record",
-    "user": "User",
-    "userList": "User List",
-    "userManagement": "User Management"
+  "data": {
+    "data": "Data",
+    "dataManagement": "Data Management"
   }
 }

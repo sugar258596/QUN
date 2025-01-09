@@ -16,6 +16,7 @@
     "order": "订单",
     "orderManagement": "订单管理",
     "unclaimedParcel": "无主包裹",
+    "bulkOrder": "散货订单",
     "containerOrder": "箱单订单",
     "lotNumberList": "批号列表",
     "postingManagement": "晒单管理",

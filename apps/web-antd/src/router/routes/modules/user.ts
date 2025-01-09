@@ -12,20 +12,20 @@ const routes: RouteRecordRaw[] = [
       order: 1000,
       title: $t('home.title'),
     },
-    name: 'Demos',
-    path: '/demos',
+    name: 'Home',
+    path: '/home',
     children: [
       {
+        name: 'user',
+        path: '/user',
         meta: {
           icon: 'tabler:users',
           title: $t('home.user.user'),
         },
-        name: 'User',
-        path: '/demos/user',
         children: [
           {
-            path: 'user',
-            name: 'UserManagement',
+            path: 'management',
+            name: 'Management',
             meta: {
               icon: 'carbon:id-management',
               title: $t('home.user.userManagement'),
@@ -40,7 +40,7 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('#/views/home/user/list/index.vue'),
               },
               {
-                path: 'message',
+                path: 'message-management',
                 name: 'MessageManagement',
                 meta: {
                   title: $t('home.user.messageManagement'),
@@ -48,7 +48,7 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('#/views/home/user/message/index.vue'),
               },
               {
-                path: 'consumption',
+                path: 'consumption-ranking',
                 name: 'ConsumptionRanking',
                 meta: {
                   title: $t('home.user.consumptionRanking'),
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw[] = [
                   import('#/views/home/user/consumption/index.vue'),
               },
               {
-                path: 'recharge',
+                path: 'recharge-record',
                 name: 'RechargeRecord',
                 meta: {
                   title: $t('home.user.rechargeRecord'),
@@ -74,7 +74,7 @@ const routes: RouteRecordRaw[] = [
                   import('#/views/home/user/leave-message/index.vue'),
               },
               {
-                path: 'entry',
+                path: 'entry-record',
                 name: 'EntryRecord',
                 meta: {
                   title: $t('home.user.entryRecord'),
@@ -82,7 +82,7 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('#/views/home/user/entry/index.vue'),
               },
               {
-                path: 'behavior',
+                path: 'behavior-log',
                 name: 'BehaviorLog',
                 meta: {
                   title: $t('home.user.behaviorLog'),
@@ -108,7 +108,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('home.order.order'),
         },
         name: 'Order',
-        path: '/demos/order',
+        path: '/order',
         children: [
           {
             path: 'order',
@@ -126,6 +126,15 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () =>
                   import('#/views/home/order/unclaimed-parcel/index.vue'),
+              },
+              {
+                path: 'bulkOrder',
+                name: 'BulkOrder',
+                meta: {
+                  title: $t('home.order.bulkOrder'),
+                },
+                component: () =>
+                  import('#/views/home/order/bulk-order/index.vue'),
               },
               {
                 path: 'containerOrder',
@@ -183,7 +192,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('home.statistics.statistics'),
         },
         name: 'Statistics',
-        path: '/demos/statistics',
+        path: '/statistics',
         component: () => import('#/views/home/statistics/index.vue'),
       },
       {
@@ -192,7 +201,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('home.stash.stash'),
         },
         name: 'Stash',
-        path: '/demos/stash',
+        path: '/stash',
         component: () => import('#/views/home/stash/index.vue'),
       },
       {
@@ -201,7 +210,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('home.service.service'),
         },
         name: 'Service',
-        path: '/demos/service',
+        path: '/service',
         component: () => import('#/views/home/service/index.vue'),
       },
       {
@@ -210,7 +219,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('home.system.system'),
         },
         name: 'System',
-        path: '/demos/system',
+        path: '/system',
         component: () => import('#/views/home/system/index.vue'),
       },
       {
@@ -219,7 +228,7 @@ const routes: RouteRecordRaw[] = [
           title: $t('home.data.data'),
         },
         name: 'Data',
-        path: '/demos/data',
+        path: '/data',
         component: () => import('#/views/home/data/index.vue'),
       },
     ],
