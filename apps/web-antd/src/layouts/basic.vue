@@ -146,7 +146,6 @@ watch(
     </template>
     <template #extra>
       <AuthenticationLoginExpiredModal
-        v-if="false"
         v-model:open="accessStore.loginExpired"
         :avatar
       >
@@ -154,7 +153,7 @@ watch(
       </AuthenticationLoginExpiredModal>
     </template>
     <template #lock-screen>
-      <LockScreen :avatar @to-login="handleLogout" v-if="false" />
+      <LockScreen :avatar @to-login="handleLogout" />
     </template>
   </BasicLayout>
 </template>
