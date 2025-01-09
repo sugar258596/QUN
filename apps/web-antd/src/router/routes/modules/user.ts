@@ -119,7 +119,7 @@ const routes: RouteRecordRaw[] = [
             },
             children: [
               {
-                path: 'membership',
+                path: 'member-ship',
                 name: 'MembershipOrder',
                 meta: {
                   title: $t('home.order.unclaimedParcel'),
@@ -128,7 +128,7 @@ const routes: RouteRecordRaw[] = [
                   import('#/views/home/order/unclaimed-parcel/index.vue'),
               },
               {
-                path: 'bulkOrder',
+                path: 'bulk-order',
                 name: 'BulkOrder',
                 meta: {
                   title: $t('home.order.bulkOrder'),
@@ -137,7 +137,7 @@ const routes: RouteRecordRaw[] = [
                   import('#/views/home/order/bulk-order/index.vue'),
               },
               {
-                path: 'containerOrder',
+                path: 'container-order',
                 name: 'ContainerOrder',
                 meta: {
                   title: $t('home.order.containerOrder'),
@@ -146,7 +146,7 @@ const routes: RouteRecordRaw[] = [
                   import('#/views/home/order/container-order/index.vue'),
               },
               {
-                path: 'lotNumberList',
+                path: 'lot-number-list',
                 name: 'LotNumberList',
                 meta: {
                   title: $t('home.order.lotNumberList'),
