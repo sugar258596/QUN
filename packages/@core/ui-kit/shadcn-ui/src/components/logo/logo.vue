@@ -42,7 +42,10 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div :class="theme" class="flex h-full items-center text-lg">
+  <div
+    :class="theme"
+    class="flex h-full w-full items-center bg-gradient-to-b from-[#2811FF] to-white text-lg"
+  >
     <a
       :class="$attrs.class"
       :href="href"

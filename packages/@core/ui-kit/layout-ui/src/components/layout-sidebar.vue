@@ -300,7 +300,7 @@ function handleMouseleave() {
         v-if="!extraCollapse"
         v-model:expand-on-hover="expandOnHover"
       />
-      <div v-if="!extraCollapse" :style="extraTitleStyle" class="pl-2">
+      <div v-if="!extraCollapse" :style="extraTitleStyle">
         <slot name="extra-title"></slot>
       </div>
       <VbenScrollbar
