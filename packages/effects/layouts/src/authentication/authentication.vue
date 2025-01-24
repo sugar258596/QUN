@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { ToolbarType } from './types';
 
+import { reactive } from 'vue';
+
 import { preferences, usePreferences } from '@vben/preferences';
 
 import { Copyright } from '../basic/copyright';
@@ -32,6 +34,11 @@ withDefaults(defineProps<Props>(), {
 
 const { authPanelCenter, authPanelLeft, authPanelRight, isDark } =
   usePreferences();
+
+const conpyrightData = reactive({
+  companyName: 'E-GO',
+  date: '2025',
+});
 </script>
 
 <template>
@@ -87,18 +94,18 @@ const { authPanelCenter, authPanelLeft, authPanelRight, isDark } =
             />
           </template>
           <SloganIcon v-else :alt="appName" class="animate-float h-64 w-2/5" />
-          <div class="text-1xl text-foreground mt-6 font-sans lg:text-2xl">
+          <!-- <div class="text-1xl text-foreground mt-6 font-sans lg:text-2xl">
             {{ pageTitle }}
           </div>
           <div class="dark:text-muted-foreground mt-2">
             {{ pageDescription }}
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
 
     <!-- 中心认证面板 -->
-    <div v-if="authPanelCenter" class="flex-center relative w-full">
+    <div v-if="false" class="flex-center relative w-full">
       <div class="login-background absolute left-0 top-0 size-full"></div>
       <AuthenticationFormView
         class="md:bg-background shadow-primary/5 shadow-float w-full rounded-3xl pb-20 md:w-2/3 lg:w-1/2 xl:w-[36%]"
@@ -124,6 +131,8 @@ const { authPanelCenter, authPanelLeft, authPanelRight, isDark } =
           <Copyright
             v-if="preferences.copyright.enable"
             v-bind="preferences.copyright"
+            :company-name="conpyrightData.companyName"
+            :date="conpyrightData.date"
           />
         </slot>
       </template>

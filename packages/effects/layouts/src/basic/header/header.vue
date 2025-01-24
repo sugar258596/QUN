@@ -161,6 +161,7 @@ function clearPreferencesAndLogout() {
         <!-- 设置 -->
         <template v-if="slot.name === 'preferences'">
           <PreferencesButton
+            v-if="preferences.app.isShowPreferences"
             class="mr-1"
             @clear-preferences-and-logout="clearPreferencesAndLogout"
           />

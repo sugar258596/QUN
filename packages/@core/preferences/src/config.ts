@@ -16,6 +16,7 @@ const defaultPreferences: Preferences = {
     enablePreferences: true,
     enableRefreshToken: false,
     isMobile: false,
+    isShowPreferences: true,
     layout: 'sidebar-nav',
     locale: 'zh-CN',
     loginExpiredMode: 'page',
@@ -51,7 +52,7 @@ const defaultPreferences: Preferences = {
   },
   logo: {
     enable: true,
-    source: 'https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp',
+    source: '../../public/logo.webp',
   },
   navigation: {
     accordion: true,

@@ -47,6 +47,8 @@ interface AppPreferences {
   enableRefreshToken: boolean;
   /** 是否移动端 */
   isMobile: boolean;
+  /** 是否显示设置按钮 */
+  isShowPreferences: boolean;
   /** 布局方式 */
   layout: LayoutType;
   /** 支持的语言 */
@@ -57,6 +59,7 @@ interface AppPreferences {
   name: string;
   /** 偏好设置按钮位置 */
   preferencesButtonPosition: PreferencesButtonPositionType;
+
   /**
    * @zh_CN 是否开启水印
    */
