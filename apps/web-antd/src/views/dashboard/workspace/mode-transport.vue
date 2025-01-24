@@ -84,6 +84,11 @@ const renderCharts = () => {
         type: 'bar',
         barWidth: '40%',
         data: barChartData.value,
+        itemStyle: {
+          color(params) {
+            return params.dataIndex === 0 ? '#5470c6' : '#91cc75';
+          },
+        },
       },
     ],
   });
