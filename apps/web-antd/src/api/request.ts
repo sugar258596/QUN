@@ -62,8 +62,24 @@ function createRequestClient(baseURL: string) {
   client.addRequestInterceptor({
     fulfilled: async (config) => {
       const accessStore = useAccessStore();
+      // console.log(config);
 
-      config.headers.Authorization = formatToken(accessStore.accessToken);
+      // 获取传递参数
+      const params = config.data;
+
+      // 获取token 和AdminId
+      const Token = accessStore.accessToken;
+      const AdminId = accessStore.adminId;
+
+      // 合并参数
+      config.data = {
+        ...params,
+        AdminId,
+        Token,
+      };
+
+      config.headers.Authorization = formatToken(Token);
+      config.headers['Content-Type'] = 'application/json;charset=UTF-8';
       config.headers['Accept-Language'] = preferences.app.locale;
       return config;
     },

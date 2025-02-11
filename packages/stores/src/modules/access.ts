@@ -23,6 +23,12 @@ interface AccessState {
    * 登录 accessToken
    */
   accessToken: AccessToken;
+
+  /**
+   * 加密管理员id
+   */
+  adminId: AccessToken;
+
   /**
    * 是否已经检查过权限
    */
@@ -73,6 +79,9 @@ export const useAccessStore = defineStore('core-access', {
     setAccessToken(token: AccessToken) {
       this.accessToken = token;
     },
+    setAdminId(adminId: AccessToken) {
+      this.adminId = adminId;
+    },
     setIsAccessChecked(isAccessChecked: boolean) {
       this.isAccessChecked = isAccessChecked;
     },
@@ -85,13 +94,14 @@ export const useAccessStore = defineStore('core-access', {
   },
   persist: {
     // 持久化
-    pick: ['accessToken', 'refreshToken', 'accessCodes'],
+    pick: ['accessToken', 'adminId', 'refreshToken', 'accessCodes'],
   },
   state: (): AccessState => ({
     accessCodes: [],
     accessMenus: [],
     accessRoutes: [],
     accessToken: null,
+    adminId: null,
     isAccessChecked: false,
     loginExpired: false,
     refreshToken: null,

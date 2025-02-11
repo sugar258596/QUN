@@ -105,7 +105,7 @@ const conpyrightData = reactive({
     </div>
 
     <!-- 中心认证面板 -->
-    <div v-if="false" class="flex-center relative w-full">
+    <div v-if="authPanelCenter" class="flex-center relative w-full">
       <div class="login-background absolute left-0 top-0 size-full"></div>
       <AuthenticationFormView
         class="md:bg-background shadow-primary/5 shadow-float w-full rounded-3xl pb-20 md:w-2/3 lg:w-1/2 xl:w-[36%]"
