@@ -2,6 +2,10 @@
   "title": "Home",
   "user": {
     "user": "User",
+    "roleManagement": "Role Management",
+    "AdministratorList": "Administrator List",
+    "roleList": "Role List",
+    "menuList": "Menu List",
     "userManagement": "User Management",
     "userList": "User List",
     "messageManagement": "Message Management",

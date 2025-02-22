@@ -1,29 +1,19 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '@vben/common-ui';
 
+import type { RowType } from './data';
+
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import { Button, message } from 'ant-design-vue';
+import { Button, message, Tag } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getAdminListApi, postAdminDeleteApi } from '#/api/core/system';
+import { getRoleListApi, postRoleDeleteApi } from '#/api/core/system';
 
 import BaseDemo from './base-demo.vue';
 import { formSchema, tableColumns } from './data';
-
-interface RowType {
-  category: string;
-  color: string;
-  id: string;
-  imageUrl: string;
-  open: boolean;
-  price: string;
-  productName: string;
-  releaseDate: string;
-  status: 'error' | 'success' | 'warning';
-}
 
 const formOptions: VbenFormProps = {
   collapsed: false,
@@ -54,7 +44,7 @@ const gridOptions: VxeTableGridOptions<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        const res = await getAdminListApi({
+        const res = await getRoleListApi({
           Page: page.currentPage,
           PageSize: page.pageSize,
           ...formValues,
@@ -101,7 +91,7 @@ function handleEdit(data: any) {
 async function handleDelete() {
   const data = gridApi.grid.getCheckboxRecords(false);
   const IdArr = data.map((item) => item.Id).join(',');
-  await postAdminDeleteApi({ IdArr });
+  await postRoleDeleteApi({ IdArr });
   await gridApi.query();
   message.success('删除成功');
 }
@@ -114,6 +104,11 @@ async function handleDelete() {
         <div class="flex gap-2">
           <Button @click="handleDelete" type="primary" danger>删除</Button>
         </div>
+      </template>
+      <template #roleType="{ row }">
+        <Tag :color="row.Role_type === 1 ? '#87d068' : '#2db7f5'">
+          {{ row.Role_type === 1 ? '超级用户' : '系统用户' }}
+        </Tag>
       </template>
       <template #action="{ row }">
         <Button @click="handleEdit(row)" type="primary">编辑</Button>

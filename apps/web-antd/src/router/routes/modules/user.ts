@@ -24,6 +24,40 @@ const routes: RouteRecordRaw[] = [
         },
         children: [
           {
+            path: 'role',
+            name: 'role',
+            meta: {
+              icon: 'carbon:user-role',
+              title: $t('home.user.roleManagement'),
+            },
+            children: [
+              {
+                path: 'admin',
+                name: 'adminList',
+                meta: {
+                  title: $t('home.user.AdministratorList'),
+                },
+                component: () => import('#/views/home/role/admin/index.vue'),
+              },
+              {
+                path: 'menu',
+                name: 'menuList',
+                meta: {
+                  title: $t('home.user.menuList'),
+                },
+                component: () => import('#/views/home/role/menu/index.vue'),
+              },
+              {
+                path: 'roleList',
+                name: 'roleList',
+                meta: {
+                  title: $t('home.user.roleList'),
+                },
+                component: () => import('#/views/home/role/list/index.vue'),
+              },
+            ],
+          },
+          {
             path: 'management',
             name: 'Management',
             meta: {

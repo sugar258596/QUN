@@ -76,7 +76,6 @@ const gridOptions: VxeTableGridOptions<RowType> = {
   },
   showOverflow: false,
 };
-
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
 const [BaseModal, sharedModalApi] = useVbenModal({

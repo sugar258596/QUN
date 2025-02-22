@@ -16,6 +16,24 @@ defineOptions({
   name: 'BaseDemo',
 });
 
+const [Modal, modalApi] = useVbenModal({
+  onCancel() {
+    modalApi.close();
+  },
+  onClosed() {
+    beforeClose();
+  },
+  async onOpenChange(isOpen: boolean) {
+    if (isOpen) {
+      const { edit, data } = modalApi.getData<Record<string, any>>();
+      if (!data || (!data.Id && !edit)) return;
+      handleChange(data.Id);
+    }
+  },
+  showCancelButton: false,
+  showConfirmButton: false,
+});
+
 const [Form, formApi] = useVbenForm({
   commonConfig: {
     componentProps: {
@@ -144,30 +162,13 @@ const [Form, formApi] = useVbenForm({
   wrapperClass: 'grid-cols-1',
 });
 
-const [Modal, modalApi] = useVbenModal({
-  onCancel() {
-    modalApi.close();
-  },
-  onClosed() {
-    beforeClose();
-  },
-  async onOpenChange(isOpen: boolean) {
-    if (isOpen) {
-      const { edit, data } = modalApi.getData<Record<string, any>>();
-      if (!data || (!data.Id && !edit)) return;
-      handleChange(data.Id);
-    }
-  },
-  showCancelButton: false,
-  showConfirmButton: false,
-});
-
 function beforeClose() {
   formApi.resetForm();
   modalApi.setData({
     edit: true,
   });
 }
+
 async function handleChange(Id: number) {
   const res = await getAdminDetailApi({ Id });
   formApi.setValues({
@@ -181,7 +182,6 @@ async function handleChange(Id: number) {
     realName: res.Realname,
   });
 }
-
 function onReset() {
   modalApi.close();
 }

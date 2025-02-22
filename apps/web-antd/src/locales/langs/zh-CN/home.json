@@ -2,6 +2,10 @@
   "title": "首页",
   "user": {
     "user": "用户",
+    "roleManagement": "角色管理",
+    "AdministratorList": "管理员列表",
+    "roleList": "角色列表",
+    "menuList": "菜单列表",
     "userManagement": "用户管理",
     "userList": "用户列表",
     "messageManagement": "消息管理",

@@ -1,14 +1,20 @@
 import type { VbenFormSchema as FormSchema } from '@vben/common-ui';
 
+export interface RowType {
+  Id: number;
+  Role_name: string;
+  Role_type: number;
+}
+
 export const formSchema: FormSchema[] = [
   {
     component: 'Input',
     componentProps: {
-      placeholder: '输入账号/客户码',
+      placeholder: '输入角色名称',
     },
     defaultValue: '',
     fieldName: 'Keywords',
-    label: '账号/客户码',
+    label: '角色名称',
   },
   // {
   //   component: 'Select',
@@ -113,21 +119,40 @@ export const formSchema: FormSchema[] = [
 ];
 
 export const tableColumns: any[] = [
-  // { align: 'center', type: 'checkbox', width: 40 },
-  // { title: '序号', type: 'seq' },
-  // { field: 'category', title: '昵称' },
-  // { field: 'imageUrl', title: '头像' },
-  // { field: 'open', title: '审核状态' },
-  // { field: 'status', title: '实名认证' },
-  // { field: 'color', title: '客户码' },
-  // { field: 'productName', title: '手机号/邮箱' },
-  // { field: 'price', title: '余额/积分' },
-  // { fixed: 'right', title: '操作', width: 120 },
   { align: 'center', type: 'checkbox', width: 40 },
   { field: 'Id', title: 'ID' },
-  { field: 'Username', title: '账号' },
-  { field: 'Mobile', title: '手机号' },
-  { field: 'Realname', title: '姓名' },
-  { field: 'AddTime', title: '注册时间' },
+  { field: 'Role_name', title: '角色名称' },
+  {
+    field: 'Role_type',
+    title: '角色类型',
+    slots: { default: 'roleType' },
+  },
   { fixed: 'right', title: '操作', slots: { default: 'action' }, width: 120 },
+];
+
+export const checkboxGroupData = [
+  {
+    label: '显示',
+    value: 'Show',
+  },
+  {
+    label: '查看',
+    value: 'View',
+  },
+  {
+    label: '添加',
+    value: 'Add',
+  },
+  {
+    label: '修改',
+    value: 'Edit',
+  },
+  {
+    label: '删除',
+    value: 'Delete',
+  },
+  {
+    label: '审核',
+    value: 'Audit',
+  },
 ];
