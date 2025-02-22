@@ -7,7 +7,7 @@ import { IconifyIcon } from '@vben/icons';
 import { Button, message, Switch } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getMenuListApi, postMenuDeleteApi } from '#/api/core/system';
+import { getMenuListApi, postMenuDeleteApi } from '#/api';
 
 import BaseDemo from './base-demo.vue';
 

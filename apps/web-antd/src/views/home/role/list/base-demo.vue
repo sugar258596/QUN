@@ -10,7 +10,7 @@ import {
   getRoleDetailApi,
   getRoleTypeListApi,
   postRoleAddApi,
-} from '#/api/core/system';
+} from '#/api';
 
 import { checkboxGroupData } from './data';
 

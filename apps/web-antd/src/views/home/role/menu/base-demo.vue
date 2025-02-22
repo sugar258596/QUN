@@ -5,11 +5,7 @@ import { useVbenForm, useVbenModal } from '@vben/common-ui';
 
 import { message } from 'ant-design-vue';
 
-import {
-  getMenuDetailApi,
-  getMenuTopListApi,
-  postMenuAddApi,
-} from '#/api/core/system';
+import { getMenuDetailApi, getMenuTopListApi, postMenuAddApi } from '#/api';
 
 import { checkboxGroupData } from './table-data';
 

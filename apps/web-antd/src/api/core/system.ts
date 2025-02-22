@@ -1,26 +1,20 @@
+import type { DeleteParams, DetailParams, Pagination } from '#/api/parameter';
+
 import { requestClient } from '#/api/request';
 
 export namespace SystemApi {
-  export interface paging {
-    /** 页码 */
-    Page: number;
-    /** 每页条数 */
-    PageSize: number;
-  }
-  /** 详情请求参数 */
-  export interface detailParams {
-    /** ID */
-    Id: number;
-  }
-
-  /** 删除请求参数 */
-  export interface deleteParams {
-    /** 需要删除的Id */
-    IdArr: string;
+  /** * 管理员用户信息返回值 */
+  export interface adminInfoResult {
+    /** 账号 */
+    Username: string;
+    /** 账号类型 */
+    roleName: string;
+    /** 首页地址 */
+    homePath: string;
   }
 
   /** 管理员列表请求参数 */
-  export interface adminListParams extends paging {
+  export interface adminListParams extends Pagination {
     /** 搜索 */
     Keywords?: string;
   }
@@ -163,6 +157,8 @@ export namespace SystemApi {
 enum Api {
   /** 获取管理员详情 */
   GET_ADMIN_DETAIL = '/api/System/AdminInfo',
+  /** 获取管理员用户信息 */
+  GET_ADMIN_INFO = '/api/System/GetAdminInfo',
   /** 管理员列表 */
   GET_ADMIN_LIST = '/api/System/AdminList',
   /** 行为日志 */
@@ -199,6 +195,15 @@ enum Api {
 }
 
 /**
+ * @description 获取管理员用户信息
+ * @param params
+ * @returns
+ */
+export async function getUserInfoApi(params?: any) {
+  return requestClient.post(Api.GET_ADMIN_INFO, params);
+}
+
+/**
  * @description 获取管理员列表
  * @param params
  * @returns
@@ -224,7 +229,7 @@ export async function postAdminAddApi(params: SystemApi.adminAddParams) {
  * @param params
  * @returns
  */
-export async function getAdminDetailApi(params: SystemApi.detailParams) {
+export async function getAdminDetailApi(params: DetailParams) {
   return requestClient.post<SystemApi.adminDetailResult>(
     Api.GET_ADMIN_DETAIL,
     params,
@@ -236,7 +241,7 @@ export async function getAdminDetailApi(params: SystemApi.detailParams) {
  * @param params
  * @returns
  */
-export async function postAdminDeleteApi(params: SystemApi.deleteParams) {
+export async function postAdminDeleteApi(params: DeleteParams) {
   return requestClient.post(Api.POST_ADMIN_DELETE, params);
 }
 
@@ -269,7 +274,7 @@ export async function getMenuTopListApi(params?: any) {
  * @param params
  * @returns
  */
-export async function getMenuDetailApi(params: SystemApi.detailParams) {
+export async function getMenuDetailApi(params: DetailParams) {
   return requestClient.post<SystemApi.menuDetailResult>(
     Api.GET_MENU_DETAIL,
     params,
@@ -290,7 +295,7 @@ export async function postMenuAddApi(params: SystemApi.menuAddParams) {
  * @param params
  * @returns
  */
-export async function postMenuDeleteApi(params: SystemApi.deleteParams) {
+export async function postMenuDeleteApi(params: DeleteParams) {
   return requestClient.post(Api.POST_MENU_DELETE, params);
 }
 
@@ -311,7 +316,7 @@ export async function getRoleListApi(params?: SystemApi.adminListParams) {
  * @param params
  * @returns
  */
-export async function getRoleDetailApi(params: SystemApi.detailParams) {
+export async function getRoleDetailApi(params: DetailParams) {
   return requestClient.post<SystemApi.roleDetailResult>(
     Api.GET_ROLE_DETAIL,
     params,
@@ -355,7 +360,7 @@ export async function getRoleAuthorityApi(params?: any) {
  * @param params
  * @returns
  */
-export async function postRoleDeleteApi(params: SystemApi.deleteParams) {
+export async function postRoleDeleteApi(params: DeleteParams) {
   return requestClient.post(Api.POST_ROLE_DELETE, params);
 }
 

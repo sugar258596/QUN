@@ -10,7 +10,7 @@ import { Page, useVbenModal } from '@vben/common-ui';
 import { Button, message, Tag } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getRoleListApi, postRoleDeleteApi } from '#/api/core/system';
+import { getRoleListApi, postRoleDeleteApi } from '#/api';
 
 import BaseDemo from './base-demo.vue';
 import { formSchema, tableColumns } from './data';

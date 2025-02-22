@@ -8,7 +8,7 @@ import { Page, useVbenModal } from '@vben/common-ui';
 import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getAdminListApi, postAdminDeleteApi } from '#/api/core/system';
+import { getAdminListApi, postAdminDeleteApi } from '#/api';
 
 import BaseDemo from './base-demo.vue';
 import { formSchema, tableColumns } from './data';

@@ -6,11 +6,7 @@ import { $t } from '@vben/locales';
 
 import { message } from 'ant-design-vue';
 
-import {
-  getAdminDetailApi,
-  getRoleTypeListApi,
-  postAdminAddApi,
-} from '#/api/core/system';
+import { getAdminDetailApi, getRoleTypeListApi, postAdminAddApi } from '#/api';
 
 defineOptions({
   name: 'BaseDemo',
