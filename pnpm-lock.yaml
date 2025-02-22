@@ -169,7 +169,7 @@ catalogs:
       specifier: ^4.0.1
       version: 4.0.1
     consola:
-      specifier: ^3.3.3
+      specifier: ^3.4.0
       version: 3.4.0
     cross-env:
       specifier: ^7.0.3
