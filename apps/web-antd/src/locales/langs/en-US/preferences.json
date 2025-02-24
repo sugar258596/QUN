@@ -12,7 +12,12 @@
     "type": "Type",
     "phone": "Phone Number",
     "email": "Email",
-    "remark": "Remark"
+    "remark": "Remark",
+    "sex": {
+      "type": "Gender",
+      "male": "Male",
+      "female": "Female"
+    }
   },
 
   "button": {

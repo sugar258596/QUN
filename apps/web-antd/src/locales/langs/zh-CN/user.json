@@ -1,0 +1,17 @@
+{
+  "usercode": "客户码",
+  "score": "积分",
+  "amount": "余额",
+  "regtime": "注册时间",
+  "inviteCode": "邀请码",
+  "real": {
+    "type": "实名认证",
+    "no": "未实名",
+    "yes": "已实名"
+  },
+  "plus": {
+    "type": "会员",
+    "no": "普通用户",
+    "yes": "PLUS 会员"
+  }
+}

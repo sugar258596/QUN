@@ -16,8 +16,8 @@ export namespace UserApi {
     /**  是否Plus 1-是 0-否，此条件不筛选则传-1 */
     IsPlus: number;
   }
-  /** 普通用户列表响应参数 */
-  export interface GetUserListResult {
+  /** 用户基础信息 */
+  export interface GetUserDetailResult {
     /** 用户ID */
     Id: number;
     /** 头像 */
@@ -30,18 +30,22 @@ export namespace UserApi {
     IsRealName: number;
     /** 性别  0男 1女 */
     Sex: number;
-    /** 客户码 */
-    UserCode: string;
     /** 手机号 */
     Mobile: string;
     /** 邮箱 */
     Email: string;
+    /** 状态 0-正常 1-冻结  */
+    Status: number;
+  }
+
+  /** 普通用户列表响应参数 */
+  export interface GetUserListResult extends GetUserDetailResult {
+    /** 客户码 */
+    UserCode: string;
     /** 余额 */
     Wallet: number;
     /** 剩余积分 */
     Score: number;
-    /** 状态 0-正常 1-冻结  */
-    Status: number;
   }
 
   /** 获取信息请求参数 */

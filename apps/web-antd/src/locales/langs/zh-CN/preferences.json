@@ -12,7 +12,12 @@
     "type": "类型",
     "phone": "手机号",
     "email": "邮箱",
-    "remark": "备注"
+    "remark": "备注",
+    "sex": {
+      "type": "性别",
+      "male": "男",
+      "female": "女"
+    }
   },
 
   "button": {

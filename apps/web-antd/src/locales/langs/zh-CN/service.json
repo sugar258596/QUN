@@ -1,0 +1,10 @@
+{
+  "inviteCode": "邀请码",
+  "regtime": "注册时间",
+  "amount": {
+    "amount": "佣金",
+    "fozen": "冻结佣金",
+    "withdraw": "可提现佣金",
+    "sum": "累计佣金"
+  }
+}

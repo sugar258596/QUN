@@ -1,0 +1,17 @@
+{
+  "usercode": "Customer Code",
+  "score": "Points",
+  "amount": "Balance",
+  "regtime": "Registration Time",
+  "inviteCode": "Invite Code",
+  "real": {
+    "type": "Real Name Authentication",
+    "no": "Not Authenticated",
+    "yes": "Authenticated"
+  },
+  "plus": {
+    "type": "Membership",
+    "no": "Regular User",
+    "yes": "PLUS Member"
+  }
+}
