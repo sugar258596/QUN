@@ -38,6 +38,8 @@
   },
   "service": {
     "service": "客服",
+    "CustomerServiceUser": "客服用户",
+    "CustomerServiceApplication": "客服申请",
     "serviceManagement": "客服管理"
   },
   "system": {

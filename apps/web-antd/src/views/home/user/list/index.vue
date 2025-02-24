@@ -198,6 +198,5 @@ const [Grid] = useVbenVxeGrid({ formOptions, gridOptions });
         <Switch v-model:checked="row.Status" disabled />
       </template>
     </Grid>
-    <BaseModal />
   </Page>
 </template>

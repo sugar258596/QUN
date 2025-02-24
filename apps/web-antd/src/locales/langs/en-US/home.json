@@ -38,6 +38,8 @@
   },
   "service": {
     "service": "Customer Service",
+    "CustomerServiceUser": "Customer Service User",
+    "CustomerServiceApplication": "Customer Service Application",
     "serviceManagement": "Customer Service Management"
   },
   "system": {

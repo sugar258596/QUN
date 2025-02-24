@@ -35,11 +35,11 @@ const formOptions: VbenFormProps = {
       componentProps: {
         options: [
           {
-            label: $t('consumption.options.0'),
+            label: $t('wallet.options.0'),
             value: 0,
           },
           {
-            label: $t('consumption.options.1'),
+            label: $t('wallet.options.1'),
             value: 1,
           },
         ],
@@ -134,7 +134,7 @@ const gridOptions: VxeTableGridOptions<UserApi.GetUserFlowListResult> = {
     search: true,
     zoom: true,
   },
-  showOverflow: true,
+  showOverflow: false,
 };
 const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
