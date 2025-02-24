@@ -19,6 +19,7 @@ import {
   CheckboxGroup,
   DatePicker,
   Divider,
+  Image,
   Input,
   InputNumber,
   InputPassword,
@@ -120,6 +121,13 @@ async function initComponentAdapter() {
     // 自定义默认按钮
     DefaultButton: (props, { attrs, slots }) => {
       return h(Button, { ...props, attrs, type: 'default' }, slots);
+    },
+    CellImage: (props, { attrs, slots }) => {
+      return h(
+        Image,
+        { height: 30, width: 30, ...props, attrs, src: props.modelValue },
+        slots,
+      );
     },
     Divider,
     IconPicker: (props, { attrs, slots }) => {

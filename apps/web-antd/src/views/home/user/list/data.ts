@@ -3,131 +3,79 @@ import type { VbenFormSchema as FormSchema } from '@vben/common-ui';
 export const formSchema: FormSchema[] = [
   {
     component: 'Input',
-    componentProps: {
-      placeholder: '输入账号/客户码',
-    },
     defaultValue: '',
     fieldName: 'Keywords',
-    label: '账号/客户码',
+    label: '账号',
   },
-  // {
-  //   component: 'Select',
-  //   componentProps: {
-  //     allowClear: true,
-  //     options: [
-  //       {
-  //         label: '管理员',
-  //         value: '1',
-  //       },
-  //       {
-  //         label: '普通用户',
-  //         value: '2',
-  //       },
-  //     ],
-  //     placeholder: '用户类型',
-  //   },
-  //   fieldName: 'type',
-  //   label: '用户类型',
-  // },
-  // {
-  //   component: 'Select',
-  //   componentProps: {
-  //     allowClear: true,
-  //     options: [
-  //       {
-  //         label: '渠道注册',
-  //         value: '1',
-  //       },
-  //       {
-  //         label: '管理员添加',
-  //         value: '2',
-  //       },
-  //     ],
-  //     placeholder: '注册来源',
-  //   },
-  //   fieldName: 'source',
-  //   label: '注册来源',
-  // },
-  // {
-  //   component: 'Select',
-  //   componentProps: {
-  //     allowClear: true,
-  //     options: [
-  //       {
-  //         label: '男',
-  //         value: '1',
-  //       },
-  //       {
-  //         label: '女',
-  //         value: '2',
-  //       },
-  //     ],
-  //     placeholder: '性别',
-  //   },
-  //   fieldName: 'sex',
-  //   label: '性别',
-  // },
-  // {
-  //   component: 'Select',
-  //   componentProps: {
-  //     allowClear: true,
-  //     options: [
-  //       {
-  //         label: '全部信息',
-  //         value: '1',
-  //       },
-  //       {
-  //         label: '全部信息',
-  //         value: '2',
-  //       },
-  //     ],
-  //     placeholder: '全部信息',
-  //   },
-  //   fieldName: 'infoAll',
-  //   label: '全部信息',
-  // },
-  // {
-  //   component: 'Select',
-  //   componentProps: {
-  //     allowClear: true,
-  //     options: [
-  //       {
-  //         label: '待处理',
-  //         value: '1',
-  //       },
-  //       {
-  //         label: '未处理',
-  //         value: '2',
-  //       },
-  //     ],
-  //     placeholder: '代办事项',
-  //   },
-  //   fieldName: 'AgentMatters',
-  //   label: '代办事项',
-  // },
-  // {
-  //   component: 'RangePicker',
-  //   fieldName: 'rangePicker',
-  //   label: '时间范围',
-  // },
+  {
+    component: 'Select',
+    componentProps: {
+      allowClear: true,
+      options: [
+        {
+          label: 'PLUS 会员',
+          value: '0',
+        },
+        {
+          label: '普通用户',
+          value: '1',
+        },
+      ],
+      placeholder: '用户类型',
+    },
+    fieldName: 'IsPlus',
+    label: '用户类型',
+  },
+  {
+    component: 'Select',
+    componentProps: {
+      allowClear: true,
+      options: [
+        {
+          label: '男',
+          value: '0',
+        },
+        {
+          label: '女',
+          value: '1',
+        },
+      ],
+      placeholder: '性别',
+    },
+    fieldName: 'Sex',
+    label: '性别',
+  },
+  {
+    component: 'RangePicker',
+    fieldName: 'rangePicker',
+    dependencies: {
+      componentProps(values) {
+        if (values.rangePicker) {
+          values.StartTime = values.rangePicker[0];
+          values.EndTime = values.rangePicker[1];
+        } else {
+          values.StartTime = '';
+          values.EndTime = '';
+        }
+        return values;
+      },
+      triggerFields: ['rangePicker'],
+    },
+    label: '时间范围',
+  },
 ];
 
 export const tableColumns: any[] = [
-  // { align: 'center', type: 'checkbox', width: 40 },
-  // { title: '序号', type: 'seq' },
-  // { field: 'category', title: '昵称' },
-  // { field: 'imageUrl', title: '头像' },
-  // { field: 'open', title: '审核状态' },
-  // { field: 'status', title: '实名认证' },
-  // { field: 'color', title: '客户码' },
-  // { field: 'productName', title: '手机号/邮箱' },
-  // { field: 'price', title: '余额/积分' },
-  // { fixed: 'right', title: '操作', width: 120 },
-  { align: 'center', type: 'checkbox', width: 40 },
   { field: 'Id', title: 'ID' },
-  { field: 'Username', title: '账号' },
+  { field: 'NickName', title: '昵称' },
+  { field: 'Avatar', title: '头像', slots: { default: 'image-url' } },
+  { field: 'IsPlus', title: '会员', slots: { default: 'puls' } },
+  { field: 'IsRealName', title: '实名认证', slots: { default: 'real-name' } },
+  { field: 'Sex', title: '性别', slots: { default: 'sex' } },
+  { field: 'UserCode', title: '客户码', slots: { default: 'code' } },
   { field: 'Mobile', title: '手机号' },
-  { field: 'Realname', title: '姓名' },
-  { field: 'AddTime', title: '注册时间' },
-  { fixed: 'right', title: '操作', slots: { default: 'action' }, width: 120 },
+  { field: 'Email', title: '邮箱' },
+  { field: 'Wallet', title: '余额' },
+  { field: 'Score', title: '积分' },
+  { field: 'Status', title: '状态', slots: { default: 'status' } },
 ];
