@@ -82,6 +82,14 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('#/views/home/user/message/index.vue'),
               },
               {
+                path: 'wallet',
+                name: 'user-wallet',
+                meta: {
+                  title: $t('home.user.userWallet'),
+                },
+                component: () => import('#/views/home/user/wallet/index.vue'),
+              },
+              {
                 path: 'consumption-ranking',
                 name: 'ConsumptionRanking',
                 meta: {

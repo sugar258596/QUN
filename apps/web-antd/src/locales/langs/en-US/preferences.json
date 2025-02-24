@@ -1,0 +1,62 @@
+{
+  "title": "Title",
+
+  "user": {
+    "id": "User ID",
+    "avatar": "Avatar",
+    "nick": "Nickname",
+    "account": "Account",
+    "password": "Password",
+    "role": "Role",
+    "status": "Status",
+    "type": "Type",
+    "phone": "Phone Number",
+    "email": "Email",
+    "remark": "Remark"
+  },
+
+  "button": {
+    "inquire": "Inquire",
+    "add": "Add",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "edit": "Edit",
+    "delete": "Delete",
+    "detail": "Detail",
+    "submit": "Submit"
+  },
+
+  "message": {
+    "add": "Add Success",
+    "edit": "Edit Success",
+    "delete": "Delete Success"
+  },
+
+  "type": {
+    "account": "Account Type",
+    "source": "Source Type",
+    "role": "Role Type",
+    "user": "User Type",
+    "type": "Type"
+  },
+
+  "status": {
+    "type": "Status",
+    "0": "Normal",
+    "1": "Frozen",
+    "2": "Locked",
+    "99": "Deleted"
+  },
+
+  "time": {
+    "start": "Start Time",
+    "end": "End Time",
+    "add": "Add Time",
+    "update": "Update Time",
+    "range": "Time Range"
+  },
+
+  "order": {
+    "no": "Order Number"
+  }
+}

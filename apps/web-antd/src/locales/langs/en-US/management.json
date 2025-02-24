@@ -1,0 +1,15 @@
+{
+  "zh_title": "Chinese Title",
+  "zh_content": "Chinese Content",
+  "en_title": "English Title",
+  "en_content": "English Content",
+  "ru_title": "Russian Title",
+  "ru_content": "Russian Content",
+  "message_type": "Message Type",
+  "push_user": "Push Users",
+  "help_push_user": "Use commas (,) between IDs",
+  "options": {
+    "all": "All Users",
+    "personage": "Individual User"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "title": "标题",
+
+  "user": {
+    "id": "用户 Id",
+    "avatar": "头像",
+    "nick": "昵称",
+    "account": "账号",
+    "password": "密码",
+    "role": "角色",
+    "status": "状态",
+    "type": "类型",
+    "phone": "手机号",
+    "email": "邮箱",
+    "remark": "备注"
+  },
+
+  "button": {
+    "inquire": "查询",
+    "add": "添加",
+    "cancel": "取消",
+    "confirm": "确认",
+    "edit": "编辑",
+    "delete": "删除",
+    "detail": "详情",
+    "submit": "提交"
+  },
+  "message": {
+    "add": "添加成功",
+    "edit": "编辑成功",
+    "delete": "删除成功"
+  },
+  "type": {
+    "account": "账号类型",
+    "source": "来源类型",
+    "role": "角色类型",
+    "user": "用户类型",
+    "type": "类型"
+  },
+  "status": {
+    "type": "状态",
+    "0": "正常",
+    "1": "冻结",
+    "2": "锁定",
+    "99": "删除"
+  },
+  "time": {
+    "start": "开始时间",
+    "end": "结束时间",
+    "add": "添加时间",
+    "update": "更新时间",
+    "range": "时间范围"
+  },
+
+  "order": {
+    "no": "订单号"
+  }
+}

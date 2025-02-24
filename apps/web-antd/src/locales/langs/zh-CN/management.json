@@ -1,0 +1,15 @@
+{
+  "zh_title": "中文标题",
+  "zh_content": "中文内容",
+  "en_title": "英文标题",
+  "en_content": "英文内容",
+  "ru_title": "俄语标题",
+  "ru_content": "俄语内容",
+  "message_type": "消息类型",
+  "push_user": "推送用户",
+  "help_push_user": "ID之间使用英文逗号隔开( , )",
+  "options": {
+    "all": "全体用户",
+    "personage": "个人用户"
+  }
+}

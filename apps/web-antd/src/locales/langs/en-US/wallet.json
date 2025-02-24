@@ -1,0 +1,13 @@
+{
+  "title": "Action",
+  "after": "Amount After Change",
+  "before": "Amount Before Change",
+  "source": "Source",
+  "change": "Change",
+  "identification": "Identification",
+  "remark": "Remark",
+  "options": {
+    "0": "Normal",
+    "1": "Abnormal"
+  }
+}

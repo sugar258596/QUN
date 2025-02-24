@@ -1,0 +1,13 @@
+{
+  "title": "行为",
+  "after": "改变后的金额",
+  "before": "改变前的金额",
+  "source": "来源",
+  "change": "改变",
+  "identification": "标识",
+  "remark": "备注",
+  "options": {
+    "0": "正常",
+    "1": "异常"
+  }
+}
