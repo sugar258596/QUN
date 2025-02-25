@@ -45,7 +45,8 @@
   },
   "system": {
     "system": "系统",
-    "systemManagement": "系统管理"
+    "systemManagement": "系统管理",
+    "country": "国家"
   },
   "data": {
     "data": "数据",

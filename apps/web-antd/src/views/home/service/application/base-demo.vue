@@ -1,14 +1,12 @@
 <script lang="ts" setup>
-import type { CustomerApi } from '#/api';
-import type { CountriesApi } from '#/api/core/countries';
+import type { CountriesApi, CustomerApi } from '#/api';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import { message } from 'ant-design-vue';
 
-import { GetCustomerDetail, UpdateCustomer } from '#/api';
-import { GetCountryList } from '#/api/core/countries';
+import { GetCustomerDetail, GetSelectCountryList, UpdateCustomer } from '#/api';
 
 defineOptions({
   name: 'BaseDemoApplication',
@@ -86,13 +84,13 @@ async function handleEdit(data: CustomerApi.GetCustomerApplyListResult) {
     {
       component: 'ApiSelect',
       componentProps: {
-        afterFetch: (data: CountriesApi.GetCountryListResult[]) => {
+        afterFetch: (data: CountriesApi.GetSeleteListResult[]) => {
           return data.map((item) => ({
             label: item.CountryName,
             value: item.Id,
           }));
         },
-        api: GetCountryList,
+        api: GetSelectCountryList,
       },
       fieldName: 'CountryId',
       label: $t('service.location'),
@@ -199,21 +197,6 @@ async function handleDetails(data: CustomerApi.GetCustomerApplyListResult) {
       fieldName: 'CountryName',
       label: $t('service.nation'),
       disabled: true,
-      defaultValue: '',
-    },
-    {
-      component: 'ApiSelect',
-      componentProps: {
-        afterFetch: (data: CountriesApi.GetCountryListResult[]) => {
-          return data.map((item) => ({
-            label: item.CountryName,
-            value: item.Id,
-          }));
-        },
-        api: GetCountryList,
-      },
-      fieldName: 'CountryId',
-      label: $t('service.location'),
       defaultValue: '',
     },
     {

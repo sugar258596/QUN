@@ -45,7 +45,8 @@
   },
   "system": {
     "system": "System",
-    "systemManagement": "System Management"
+    "systemManagement": "System Management",
+    "country": "Country"
   },
   "data": {
     "data": "Data",

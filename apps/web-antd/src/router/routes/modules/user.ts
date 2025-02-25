@@ -291,7 +291,17 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'System',
         path: '/system',
-        component: () => import('#/views/home/system/index.vue'),
+        children: [
+          {
+            meta: {
+              icon: 'gis:search-country',
+              title: $t('home.system.country'),
+            },
+            name: 'Country',
+            path: 'country',
+            component: () => import('#/views/home/system/country/index.vue'),
+          },
+        ],
       },
       {
         meta: {
