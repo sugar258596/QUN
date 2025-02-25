@@ -40,7 +40,8 @@
     "service": "客服",
     "CustomerServiceUser": "客服用户",
     "CustomerServiceApplication": "客服申请",
-    "serviceManagement": "客服管理"
+    "serviceManagement": "客服管理",
+    "agency": "代理客服"
   },
   "system": {
     "system": "系统",

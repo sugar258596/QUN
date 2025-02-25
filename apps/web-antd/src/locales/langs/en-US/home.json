@@ -8,11 +8,11 @@
     "menuList": "Menu List",
     "userManagement": "User Management",
     "userList": "User List",
-    "userWallet": "User Wallet",
+    "userWallet": "User Transactions",
     "messageManagement": "Message Management",
     "consumptionRanking": "Consumption Ranking",
     "rechargeRecord": "Recharge Record",
-    "leaveMessageManagement": "Leave Message Management",
+    "leaveMessageManagement": "Message Management",
     "entryRecord": "Login Record",
     "behaviorLog": "Behavior Log",
     "membershipManagement": "Membership Management"
@@ -25,7 +25,7 @@
     "containerOrder": "Container Order",
     "lotNumberList": "Lot Number List",
     "postingManagement": "Posting Management",
-    "userPosting": "User Posting",
+    "userPosting": "User Postings",
     "releaseInformation": "Release Information"
   },
   "statistics": {
@@ -40,7 +40,8 @@
     "service": "Customer Service",
     "CustomerServiceUser": "Customer Service User",
     "CustomerServiceApplication": "Customer Service Application",
-    "serviceManagement": "Customer Service Management"
+    "serviceManagement": "Customer Service Management",
+    "agency": "Agent Support"
   },
   "system": {
     "system": "System",

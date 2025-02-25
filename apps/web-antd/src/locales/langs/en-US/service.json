@@ -1,0 +1,33 @@
+{
+  "model": {
+    "eidt": "Customer Service Modification Request",
+    "details": "Customer Service Request Details"
+  },
+  "nation": "Country",
+  "location": "Country of Location",
+  "type": "Customer Service Type",
+  "inviteCode": "Invite Code",
+  "remark": "Remark",
+
+  "amount": {
+    "type": "Commission",
+    "fozen": "Frozen Commission",
+    "withdraw": "Withdrawable Commission",
+    "sum": "Total Commission"
+  },
+  "customer": {
+    "type": "Customer Service Type",
+    "0": "Regular Customer Service",
+    "1": "Agent Customer Service"
+  },
+  "examine": {
+    "type": "Audit Status",
+    "0": "Audit Passed",
+    "1": "Pending Audit",
+    "2": "Audit Failed"
+  },
+  "tips": {
+    "user": "User Account, Nickname",
+    "application": "Name, Country Name, Phone Number"
+  }
+}

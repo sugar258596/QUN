@@ -4,6 +4,7 @@
   "user": {
     "id": "User ID",
     "avatar": "Avatar",
+    "name": "Name",
     "nick": "Nickname",
     "account": "Account",
     "password": "Password",
@@ -21,22 +22,22 @@
   },
 
   "button": {
+    "type": "Action",
     "inquire": "Inquire",
     "add": "Add",
     "cancel": "Cancel",
     "confirm": "Confirm",
     "edit": "Edit",
     "delete": "Delete",
-    "detail": "Detail",
-    "submit": "Submit"
+    "detail": "Details",
+    "submit": "Submit",
+    "examine": "Examine"
   },
-
   "message": {
-    "add": "Add Success",
-    "edit": "Edit Success",
-    "delete": "Delete Success"
+    "add": "Added Successfully",
+    "edit": "Edited Successfully",
+    "delete": "Deleted Successfully"
   },
-
   "type": {
     "account": "Account Type",
     "source": "Source Type",
@@ -44,21 +45,23 @@
     "user": "User Type",
     "type": "Type"
   },
-
   "status": {
     "type": "Status",
     "0": "Normal",
     "1": "Frozen",
     "2": "Locked",
-    "99": "Deleted"
+    "99": "Deleted",
+    "no": "All"
   },
-
   "time": {
     "start": "Start Time",
     "end": "End Time",
-    "add": "Add Time",
-    "update": "Update Time",
-    "range": "Time Range"
+    "add": "Added Time",
+    "update": "Updated Time",
+    "range": "Time Range",
+    "register": "Registration Time",
+    "apply": "Application Time",
+    "audit": "Audit Time"
   },
 
   "order": {

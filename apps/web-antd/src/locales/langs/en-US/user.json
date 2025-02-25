@@ -6,8 +6,8 @@
   "inviteCode": "Invite Code",
   "real": {
     "type": "Real Name Authentication",
-    "no": "Not Authenticated",
-    "yes": "Authenticated"
+    "1": "Not Authenticated",
+    "0": "Authenticated"
   },
   "plus": {
     "type": "Membership",

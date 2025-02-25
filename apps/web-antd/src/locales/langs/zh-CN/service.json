@@ -1,10 +1,33 @@
 {
+  "model": {
+    "eidt": "客服申请修改",
+    "details": "客服申请详情"
+  },
+  "nation": "国家",
+  "location": "所在国家",
+  "type": "客服类型",
   "inviteCode": "邀请码",
-  "regtime": "注册时间",
+  "remark": "备注",
+
   "amount": {
     "type": "佣金",
     "fozen": "冻结佣金",
     "withdraw": "可提现佣金",
     "sum": "累计佣金"
+  },
+  "customer": {
+    "type": "客服类型",
+    "0": "普通客服",
+    "1": "代理客服"
+  },
+  "examine": {
+    "type": "审核状态",
+    "0": "审核通过",
+    "1": "待审核",
+    "2": "未通过"
+  },
+  "tips": {
+    "user": "用户账号、昵称",
+    "application": "姓名，国家名称，手机号"
   }
 }
