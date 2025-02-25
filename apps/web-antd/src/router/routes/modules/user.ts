@@ -253,7 +253,36 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'Service',
         path: '/service',
-        component: () => import('#/views/home/service/index.vue'),
+        children: [
+          {
+            meta: {
+              icon: 'carbon:customer-service',
+              title: $t('home.service.CustomerServiceUser'),
+            },
+            name: 'serviceUser',
+            path: 'user',
+            component: () => import('#/views/home/service/user/index.vue'),
+          },
+          {
+            meta: {
+              icon: 'covid:transmission-virus-mobile-application',
+              title: $t('home.service.CustomerServiceApplication'),
+            },
+            name: 'Application',
+            path: 'application',
+            component: () =>
+              import('#/views/home/service/application/index.vue'),
+          },
+          {
+            meta: {
+              icon: 'map:real-estate-agency',
+              title: $t('home.service.agency'),
+            },
+            name: 'Agency',
+            path: 'agency',
+            component: () => import('#/views/home/service/agency/index.vue'),
+          },
+        ],
       },
       {
         meta: {
