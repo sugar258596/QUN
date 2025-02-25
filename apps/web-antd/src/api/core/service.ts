@@ -1,10 +1,10 @@
-import type { UserApi } from './index';
+import type { SystemApi, UserApi } from './index';
 
 import type { DeleteParams, DetailParams, Pagination } from '#/api/parameter';
 
 import { requestClient } from '#/api/request';
 
-export namespace CustomerApi {
+export namespace ServiceApi {
   /** 客服列表返回值 */
   export interface GetCustomerListResult extends UserApi.GetUserDetailResult {
     /** 邀请码 */
@@ -21,7 +21,7 @@ export namespace CustomerApi {
 
   /** 客服申请列表请求参数 */
   export interface GetCustomerApplyListParams
-    extends Omit<UserApi.GetMessageListParams, 'IsPlus' | 'Sex'>,
+    extends Omit<SystemApi.GetMessageListParams, 'IsPlus' | 'Sex'>,
       Pagination {
     /** 客服类型 */
     Type: number;
@@ -113,7 +113,7 @@ enum Api {
 export function GetCustomerList(
   params: Omit<UserApi.GetUserListParams, 'IsPlus'> & Pagination,
 ) {
-  return requestClient.post<CustomerApi.GetCustomerListResult[]>(
+  return requestClient.post<ServiceApi.GetCustomerListResult[]>(
     Api.GET_CUSTOMETR_LIST,
     params,
   );
@@ -125,9 +125,9 @@ export function GetCustomerList(
  * @returns
  */
 export function GetCustomerApplyList(
-  params: CustomerApi.GetCustomerApplyListParams,
+  params: ServiceApi.GetCustomerApplyListParams,
 ) {
-  return requestClient.post<CustomerApi.GetCustomerApplyListResult[]>(
+  return requestClient.post<ServiceApi.GetCustomerApplyListResult[]>(
     Api.GET_CUSTOMER_APPLY_LIST,
     params,
   );
@@ -139,7 +139,7 @@ export function GetCustomerApplyList(
  * @returns
  */
 export function GetCustomerDetail(params: DetailParams) {
-  return requestClient.post<CustomerApi.GetCustomerApplyListResult>(
+  return requestClient.post<ServiceApi.GetCustomerApplyListResult>(
     Api.GET_CUSTOMER_DETAIL,
     params,
   );
@@ -151,7 +151,7 @@ export function GetCustomerDetail(params: DetailParams) {
  * @returns
  */
 export function UpdateCustomerApply(
-  params: CustomerApi.UpdateCustomerApplyParams,
+  params: ServiceApi.UpdateCustomerApplyParams,
 ) {
   return requestClient.post(Api.UPDATE_CUSTOMER_APPLY, params);
 }
@@ -161,7 +161,7 @@ export function UpdateCustomerApply(
  * @param params
  * @returns
  */
-export function UpdateCustomer(params: CustomerApi.UpdateCustomerParams) {
+export function UpdateCustomer(params: ServiceApi.UpdateCustomerParams) {
   return requestClient.post(Api.UPDATE_CUSTOMER, params);
 }
 
@@ -180,7 +180,7 @@ export function DeleteCustomer(params: DeleteParams) {
  * @returns
  */
 export function GetAgentAchievement(
-  params: CustomerApi.GetAgentAchievementParams,
+  params: ServiceApi.GetAgentAchievementParams,
 ) {
   return requestClient.post<UserApi.GetUserFlowDetailResult[]>(
     Api.GET_AGENT_ACHIEVEMENT,

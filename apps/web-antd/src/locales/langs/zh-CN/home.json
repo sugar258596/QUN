@@ -9,7 +9,7 @@
     "userManagement": "用户管理",
     "userList": "用户列表",
     "userWallet": "用户流水",
-    "messageManagement": "消息管理",
+
     "consumptionRanking": "消费排行",
     "rechargeRecord": "充值记录",
     "leaveMessageManagement": "留言管理",
@@ -46,6 +46,7 @@
   "system": {
     "system": "系统",
     "systemManagement": "系统管理",
+    "message": "消息",
     "country": "国家"
   },
   "data": {

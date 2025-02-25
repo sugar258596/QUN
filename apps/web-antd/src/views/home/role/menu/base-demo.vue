@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SystemApi } from '#/api/core/system';
+import type { UserApi } from '#/api/core/user';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 
@@ -35,7 +35,7 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'ApiSelect',
       componentProps: {
-        afterFetch: (data: SystemApi.menuTopListResult[]) => {
+        afterFetch: (data: UserApi.menuTopListResult[]) => {
           return data.map((item) => ({
             label: item.Title,
             value: item.Id,

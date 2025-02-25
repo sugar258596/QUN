@@ -9,7 +9,6 @@
     "userManagement": "User Management",
     "userList": "User List",
     "userWallet": "User Transactions",
-    "messageManagement": "Message Management",
     "consumptionRanking": "Consumption Ranking",
     "rechargeRecord": "Recharge Record",
     "leaveMessageManagement": "Message Management",
@@ -46,6 +45,7 @@
   "system": {
     "system": "System",
     "systemManagement": "System Management",
+    "message": "Message",
     "country": "Country"
   },
   "data": {

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { CountriesApi, CustomerApi } from '#/api';
+import type { ServiceApi, SystemApi } from '#/api';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -66,7 +66,7 @@ const [Modal, modalApi] = useVbenModal({
   showCancelButton: true,
   showConfirmButton: true,
 });
-async function handleEdit(data: CustomerApi.GetCustomerApplyListResult) {
+async function handleEdit(data: ServiceApi.GetCustomerApplyListResult) {
   const schemas = [
     {
       component: 'Input',
@@ -84,7 +84,7 @@ async function handleEdit(data: CustomerApi.GetCustomerApplyListResult) {
     {
       component: 'ApiSelect',
       componentProps: {
-        afterFetch: (data: CountriesApi.GetSeleteListResult[]) => {
+        afterFetch: (data: SystemApi.GetSeleteListResult[]) => {
           return data.map((item) => ({
             label: item.CountryName,
             value: item.Id,
@@ -151,7 +151,7 @@ async function handleEdit(data: CustomerApi.GetCustomerApplyListResult) {
   });
 }
 
-async function handleDetails(data: CustomerApi.GetCustomerApplyListResult) {
+async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
   const schemas = [
     {
       component: 'Input',

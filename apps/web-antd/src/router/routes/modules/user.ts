@@ -73,14 +73,7 @@ const routes: RouteRecordRaw[] = [
                 },
                 component: () => import('#/views/home/user/list/index.vue'),
               },
-              {
-                path: 'message-management',
-                name: 'MessageManagement',
-                meta: {
-                  title: $t('home.user.messageManagement'),
-                },
-                component: () => import('#/views/home/user/message/index.vue'),
-              },
+
               {
                 path: 'wallet',
                 name: 'user-wallet',
@@ -292,6 +285,15 @@ const routes: RouteRecordRaw[] = [
         name: 'System',
         path: '/system',
         children: [
+          {
+            path: 'message',
+            name: 'MessageManagement',
+            meta: {
+              icon: 'uil:message',
+              title: $t('home.system.message'),
+            },
+            component: () => import('#/views/home/system/message/index.vue'),
+          },
           {
             meta: {
               icon: 'gis:search-country',

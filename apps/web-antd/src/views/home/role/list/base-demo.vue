@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SystemApi } from '#/api/core/system';
+import type { UserApi } from '#/api/core/user';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 
@@ -79,7 +79,7 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'ApiSelect',
       componentProps: {
-        afterFetch: (data: SystemApi.roleTypeListResult[]) => {
+        afterFetch: (data: UserApi.roleTypeListResult[]) => {
           return data.map((item) => ({
             label: item.Name,
             value: item.Id,
@@ -169,14 +169,14 @@ async function handleSetState() {
   });
 }
 
-function transformData(data: SystemApi.roleAuthorityResult[]): SchemaResult[] {
+function transformData(data: UserApi.roleAuthorityResult[]): SchemaResult[] {
   const stateData: SchemaResult[] = [];
   traverseData(data, stateData);
   return stateData;
 }
 
 function transformValue(
-  data: SystemApi.roleAuthorityResult[],
+  data: UserApi.roleAuthorityResult[],
 ): Record<string, string[]> {
   const stateData: Record<string, string[]> = {};
   traverseValue(data, stateData);
@@ -184,7 +184,7 @@ function transformValue(
 }
 
 function traverseData(
-  items: SystemApi.roleAuthorityResult[],
+  items: UserApi.roleAuthorityResult[],
   stateData: SchemaResult[],
 ): void {
   for (const item of items) {
@@ -197,7 +197,7 @@ function traverseData(
 }
 
 function traverseValue(
-  items: SystemApi.roleAuthorityResult[],
+  items: UserApi.roleAuthorityResult[],
   stateData: Record<string, string[]>,
 ): void {
   for (const item of items) {
@@ -232,7 +232,7 @@ function getCheckboxGroupOptions(
 }
 
 function createSchema(
-  item: SystemApi.roleAuthorityResult,
+  item: UserApi.roleAuthorityResult,
   options: CheckboxGroupOption[],
 ): SchemaResult {
   return {
@@ -247,7 +247,7 @@ function createSchema(
 }
 
 function updateFormSchema(
-  item: SystemApi.roleAuthorityResult,
+  item: UserApi.roleAuthorityResult,
   options: CheckboxGroupOption[],
 ): void {
   const schemaItem = createSchema(item, options);
