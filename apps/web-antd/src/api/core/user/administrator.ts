@@ -1,13 +1,8 @@
-import type {
-  AuditParams,
-  DeleteParams,
-  DetailParams,
-  Pagination,
-} from '#/api';
+import type { DeleteParams, DetailParams, Pagination } from '#/api';
 
 import { requestClient } from '#/api/request';
 
-export namespace UserApi {
+export namespace AdministratorApi {
   /** * 管理员用户信息返回值 */
   export interface adminInfoResult {
     /** 账号 */
@@ -157,126 +152,6 @@ export namespace UserApi {
     /** 权限序列化 */
     authorityJson: string;
   }
-
-  /** 获取普通用户请求参数 */
-  export interface GetUserListParams {
-    /** 开始时间 */
-    StartTime: string;
-    /** 结束时间 */
-    EndTime: string;
-    /** 关键字 */
-    Keywords: string;
-    /** 性别  0男 1女 */
-    Sex: number;
-    /**  是否Plus 1-是 0-否，此条件不筛选则传-1 */
-    IsPlus: number;
-  }
-  /** 用户基础信息 */
-  export interface GetUserDetailResult {
-    /** ID */
-    Id: number;
-    /** 头像 */
-    Avatar: string;
-    /** 用户ID */
-    MemberId: number;
-    /** 昵称 */
-    NickName: string;
-    UserNick: string;
-    /** 是否会员 0-否 1-是 */
-    IsPlus: number;
-    /** 是否实名 0-否 1-是 */
-    IsRealName: number;
-    /** 性别  0男 1女 */
-    Sex: number;
-    /** 手机号 */
-    Mobile: string;
-    /** 邮箱 */
-    Email: string;
-    /** 状态 0-正常 1-冻结  */
-    Status: number;
-  }
-
-  /** 普通用户列表响应参数 */
-  export interface GetUserListResult extends GetUserDetailResult {
-    /** 客户码 */
-    UserCode: string;
-    /** 余额 */
-    Wallet: number;
-    /** 剩余积分 */
-    Score: number;
-  }
-
-  /** 获取用户流水列表请求参数 */
-  export interface GetUserFlowListParams extends Pagination {
-    /** 开始时间 */
-    StartTime: string;
-    /** 结束时间 */
-    EndTime: string;
-    /** 订单号 */
-    Keywords: string;
-    /** 用户ID */
-    Id: number;
-    /** 状态 0-正常 1-不正常 */
-    Status: number;
-  }
-  /** 用户流水列表响应参数 */
-  export interface GetUserFlowListResult {
-    /** 流水ID */
-    Id: number;
-    /** 用户ID */
-    UserId: number;
-    /** 用户昵称 */
-    UserNick: string;
-    /** 用户头像 */
-    Avatar: string;
-    /** 账号类型 */
-    WalletType: number;
-    /** 标题枚举 */
-    TitleType: number;
-    /** 订单号 */
-    OrderNo: string;
-    /** 来源类型 */
-    SourceType: number;
-    /** 改变后的金额(余额才添加) */
-    After: number;
-    /** 添加时间 */
-    AddTime: string;
-    /** 状态 0-正常 1-冻结 99-删除 */
-    WalletStatus: number;
-  }
-  /** 用户流水详情响应参数 */
-  export interface GetUserFlowDetailResult extends GetUserFlowListResult {
-    /** 用户id */
-    MemberId: number;
-    /** 记录来源 */
-    SourceUserId: number;
-    /** 变化 */
-    Change: number;
-    /** 改变前的金额(余额才添加) */
-    Before: number;
-    /** 标识 */
-    Note: string;
-    /** 备注 */
-    Remark: string;
-  }
-
-  /** 实名制列表返回参数 */
-  export interface RealNameListResult extends GetUserDetailResult {
-    /** 姓名 */
-    Name: string;
-    /** 身份证号 */
-    IDnumber: string;
-    /** 国家码 */
-    CountryCode: number;
-    /** 审核备注 */
-    ReviewComments: string;
-    /** 申请时间 */
-    AddTime: string;
-    /** 审核时间 */
-    UpdateTime: string;
-    /** 证明图片 */
-    AdditionalInfo: string[];
-  }
 }
 
 enum Api {
@@ -295,10 +170,7 @@ enum Api {
   GET_MENU_LIST = '/api/System/MenuList',
   /** 获取菜单列表的顶级菜单 */
   GET_MENU_TOP_LIST = '/api/System/TopMenuBox',
-  /** 获取实名详情 */
-  GET_REAL_NAME_DETAIL = '/api/RealName/RealNameDetails',
-  /** 获取实名制列表 */
-  GET_REAL_NAME_LIST = '/api/RealName/CustomerServiceList',
+
   /** 获取角色权限资源 */
   GET_ROLE_AUTHORITY = '/api/System/ShowMenuInfo',
 
@@ -309,13 +181,7 @@ enum Api {
   GET_ROLE_LIST = '/api/System/RoleList',
   /** 获取角色类型数据 */
   GET_ROLE_TYPE_LIST = '/api/System/GetRoleTypeList',
-  /** 获取用户流水详情 */
-  GET_USER_FLOW_DETAIL = '/api/User/UserWalletLogDetails',
-  /** 获取用户流水列表 */
-  GET_USER_FLOW_LIST = '/api/User/UserWalletLogList',
 
-  /** 获取普通用户列表 */
-  GET_USER_LIST = '/api/User/UserList',
   /** 新增/修改管理员*/
   POST_ADMIN_ADD = '/api/System/AddOrEditAdmin',
   /** 删除管理员 */
@@ -326,8 +192,6 @@ enum Api {
   /** 删除菜单 */
   POST_MENU_DELETE = '/api/System/DelMenu',
 
-  /** 实名制审核 */
-  POST_REAL_NAME_CHECK = '/api/RealName/IdentityVerificationIs',
   /** 新增/修改角色 */
   POST_ROLE_ADD = '/api/System/AddOrEditRole',
   /** 删除角色 */
@@ -348,8 +212,10 @@ export async function getUserInfoApi(params?: any) {
  * @param params
  * @returns
  */
-export async function getAdminListApi(params: UserApi.adminListParams) {
-  return requestClient.post<UserApi.adminListResult[]>(
+export async function getAdminListApi(
+  params: AdministratorApi.adminListParams,
+) {
+  return requestClient.post<AdministratorApi.adminListResult[]>(
     Api.GET_ADMIN_LIST,
     params,
   );
@@ -360,7 +226,7 @@ export async function getAdminListApi(params: UserApi.adminListParams) {
  * @param params
  * @returns
  */
-export async function postAdminAddApi(params: UserApi.adminAddParams) {
+export async function postAdminAddApi(params: AdministratorApi.adminAddParams) {
   return requestClient.post(Api.POST_ADMIN_ADD, params);
 }
 
@@ -370,7 +236,7 @@ export async function postAdminAddApi(params: UserApi.adminAddParams) {
  * @returns
  */
 export async function getAdminDetailApi(params: DetailParams) {
-  return requestClient.post<UserApi.adminDetailResult>(
+  return requestClient.post<AdministratorApi.adminDetailResult>(
     Api.GET_ADMIN_DETAIL,
     params,
   );
@@ -391,7 +257,7 @@ export async function postAdminDeleteApi(params: DeleteParams) {
  * @returns
  */
 export async function getMenuListApi(params?: any) {
-  return requestClient.post<UserApi.menuListResult[]>(
+  return requestClient.post<AdministratorApi.menuListResult[]>(
     Api.GET_MENU_LIST,
     params,
   );
@@ -403,7 +269,7 @@ export async function getMenuListApi(params?: any) {
  * @returns
  */
 export async function getMenuTopListApi(params?: any) {
-  return requestClient.post<UserApi.menuListResult[]>(
+  return requestClient.post<AdministratorApi.menuListResult[]>(
     Api.GET_MENU_TOP_LIST,
     params,
   );
@@ -415,7 +281,7 @@ export async function getMenuTopListApi(params?: any) {
  * @returns
  */
 export async function getMenuDetailApi(params: DetailParams) {
-  return requestClient.post<UserApi.menuDetailResult>(
+  return requestClient.post<AdministratorApi.menuDetailResult>(
     Api.GET_MENU_DETAIL,
     params,
   );
@@ -426,7 +292,7 @@ export async function getMenuDetailApi(params: DetailParams) {
  * @param params
  * @returns
  */
-export async function postMenuAddApi(params: UserApi.menuAddParams) {
+export async function postMenuAddApi(params: AdministratorApi.menuAddParams) {
   return requestClient.post(Api.POST_MENU_ADD, params);
 }
 
@@ -444,8 +310,10 @@ export async function postMenuDeleteApi(params: DeleteParams) {
  * @param params
  * @returns
  */
-export async function getRoleListApi(params?: UserApi.adminListParams) {
-  return requestClient.post<UserApi.roleListResult[]>(
+export async function getRoleListApi(
+  params?: AdministratorApi.adminListParams,
+) {
+  return requestClient.post<AdministratorApi.roleListResult[]>(
     Api.GET_ROLE_LIST,
     params,
   );
@@ -457,7 +325,7 @@ export async function getRoleListApi(params?: UserApi.adminListParams) {
  * @returns
  */
 export async function getRoleDetailApi(params: DetailParams) {
-  return requestClient.post<UserApi.roleDetailResult>(
+  return requestClient.post<AdministratorApi.roleDetailResult>(
     Api.GET_ROLE_DETAIL,
     params,
   );
@@ -468,7 +336,7 @@ export async function getRoleDetailApi(params: DetailParams) {
  * @returns
  */
 export async function getRoleTypeListApi(params?: any) {
-  return requestClient.post<UserApi.roleListResult[]>(
+  return requestClient.post<AdministratorApi.roleListResult[]>(
     Api.GET_ROLE_TYPE_LIST,
     params,
   );
@@ -479,7 +347,7 @@ export async function getRoleTypeListApi(params?: any) {
  * @param params
  * @returns
  */
-export async function postRoleAddApi(params: UserApi.roleAddParams) {
+export async function postRoleAddApi(params: AdministratorApi.roleAddParams) {
   return requestClient.post(Api.POST_ROLE_ADD, params);
 }
 
@@ -489,7 +357,7 @@ export async function postRoleAddApi(params: UserApi.roleAddParams) {
  * @returns
  */
 export async function getRoleAuthorityApi(params?: any) {
-  return requestClient.post<UserApi.roleAuthorityResult[]>(
+  return requestClient.post<AdministratorApi.roleAuthorityResult[]>(
     Api.GET_ROLE_AUTHORITY,
     params,
   );
@@ -510,79 +378,8 @@ export async function postRoleDeleteApi(params: DeleteParams) {
  * @returns
  */
 export async function getBehaviorLogApi(params?: any) {
-  return requestClient.post<UserApi.adminListResult[]>(
+  return requestClient.post<AdministratorApi.adminListResult[]>(
     Api.GET_BEHAVIOR_LOG,
     params,
   );
-}
-
-/**
- * @description 获取普通用户列表
- * @param params
- * @returns
- */
-export function getUserList(params: Pagination & UserApi.GetUserListParams) {
-  return requestClient.post<UserApi.GetUserListResult[]>(
-    Api.GET_USER_LIST,
-    params,
-  );
-}
-
-/**
- * @description 获取用户流水列表
- * @param params
- * @returns
- */
-export function getUserFlowList(params: UserApi.GetUserFlowListParams) {
-  return requestClient.post<UserApi.GetUserFlowListResult[]>(
-    Api.GET_USER_FLOW_LIST,
-    params,
-  );
-}
-
-/**
- * @description 获取用户流水详情
- * @param params
- * @returns
- */
-export function getUserFlowDetail(params: DetailParams) {
-  return requestClient.post<UserApi.GetUserFlowDetailResult>(
-    Api.GET_USER_FLOW_DETAIL,
-    params,
-  );
-}
-
-/**
- * @description 获取实名认证列表
- * @param params
- * @returns
- */
-export function getRealNameList(
-  params: Omit<UserApi.GetUserListParams, 'IsPlus'> & Pagination,
-) {
-  return requestClient.post<UserApi.RealNameListResult[]>(
-    Api.GET_REAL_NAME_LIST,
-    params,
-  );
-}
-
-/**
- * @description 获取实名认证详情
- * @param params
- * @returns
- */
-export function getRealNameDetail(params: DetailParams) {
-  return requestClient.post<UserApi.RealNameListResult>(
-    Api.GET_REAL_NAME_DETAIL,
-    params,
-  );
-}
-
-/**
- * @description 实名认证审核
- * @param params
- * @returns
- */
-export function postRealNameCheck(params: AuditParams) {
-  return requestClient.post(Api.POST_REAL_NAME_CHECK, params);
 }

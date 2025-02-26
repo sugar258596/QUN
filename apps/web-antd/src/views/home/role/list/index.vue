@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '@vben/common-ui';
 
-import type { RowType } from './data';
-
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { AdministratorApi } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
@@ -11,32 +10,57 @@ import { Button, message, Tag } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getRoleListApi, postRoleDeleteApi } from '#/api';
+import { $t } from '#/locales';
 
 import BaseDemo from './base-demo.vue';
-import { formSchema, tableColumns } from './data';
 
 const formOptions: VbenFormProps = {
   collapsed: false,
   wrapperClass: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-  schema: formSchema,
+  schema: [
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: '输入角色名称',
+      },
+      defaultValue: '',
+      fieldName: 'Keywords',
+      label: '角色名称',
+    },
+  ],
   showCollapseButton: false,
   submitButtonOptions: {
-    content: '查询',
+    content: $t('preferences.button.inquire'),
   },
   resetButtonOptions: {
-    content: '添加',
+    content: $t('preferences.button.add'),
   },
   handleReset: onReset,
   submitOnChange: true,
   submitOnEnter: true,
 };
 
-const gridOptions: VxeTableGridOptions<RowType> = {
+const gridOptions: VxeTableGridOptions<AdministratorApi.adminDetailResult> = {
   checkboxConfig: {
     highlight: true,
     labelField: 'Name',
   },
-  columns: tableColumns,
+  columns: [
+    { align: 'center', type: 'checkbox', width: 40 },
+    { field: 'Id', title: 'ID' },
+    { field: 'Role_name', title: $t('user.role.name') },
+    {
+      field: 'Role_type',
+      title: $t('user.role.type'),
+      slots: { default: 'roleType' },
+    },
+    {
+      fixed: 'right',
+      title: $t('preferences.button.type'),
+      slots: { default: 'action' },
+      width: 120,
+    },
+  ],
   exportConfig: {},
   height: 'auto',
   keepSource: true,
@@ -93,7 +117,7 @@ async function handleDelete() {
   const IdArr = data.map((item) => item.Id).join(',');
   await postRoleDeleteApi({ IdArr });
   await gridApi.query();
-  message.success('删除成功');
+  message.success($t('preferences.message.delete'));
 }
 </script>
 
@@ -102,16 +126,20 @@ async function handleDelete() {
     <Grid>
       <template #toolbar-tools>
         <div class="flex gap-2">
-          <Button @click="handleDelete" type="primary" danger>删除</Button>
+          <Button @click="handleDelete" type="primary" danger>
+            {{ $t('preferences.button.delete') }}
+          </Button>
         </div>
       </template>
       <template #roleType="{ row }">
         <Tag :color="row.Role_type === 1 ? '#87d068' : '#2db7f5'">
-          {{ row.Role_type === 1 ? '超级用户' : '系统用户' }}
+          {{ row.Role_type === 1 ? $t('user.role.1') : $t('user.role.1') }}
         </Tag>
       </template>
       <template #action="{ row }">
-        <Button @click="handleEdit(row)" type="primary">编辑</Button>
+        <Button @click="handleEdit(row)" type="primary">
+          {{ $t('preferences.button.edit') }}
+        </Button>
       </template>
     </Grid>
     <BaseModal />

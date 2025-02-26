@@ -35,6 +35,8 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.close();
   },
   async onConfirm() {
+    const { valid } = await formApi.validate();
+    if (!valid) return;
     const { edit } = modalApi.getData<Record<string, any>>();
     if (edit) return;
     const formData = await formApi.getValues();

@@ -31,7 +31,9 @@
     "delete": "删除",
     "detail": "详情",
     "submit": "提交",
-    "examine": "审核"
+    "examine": "审核",
+    "expand": "展开全部",
+    "fold": "收起全部"
   },
   "message": {
     "add": "添加成功",

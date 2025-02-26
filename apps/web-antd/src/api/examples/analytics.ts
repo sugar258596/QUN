@@ -1,4 +1,4 @@
-import type { Pagination } from '#/api/parameter';
+import type { Pagination } from '#/api';
 
 import { requestClient } from '#/api/request';
 

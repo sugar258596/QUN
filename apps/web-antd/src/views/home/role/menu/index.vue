@@ -3,6 +3,7 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
+import { $t } from '@vben/locales';
 
 import { Button, message, Switch } from 'ant-design-vue';
 
@@ -28,17 +29,26 @@ const gridOptions: VxeGridProps<RowType> = {
   columns: [
     { align: 'left', type: 'checkbox', width: 50 },
     { field: 'Id', title: 'ID', treeNode: true },
-    { field: 'Title', title: '菜单名称' },
+    { field: 'Title', title: $t('user.menu.name') },
     {
       field: 'Icon_url',
-      title: '图标',
+      title: $t('user.menu.icon'),
       slots: { default: 'icon' },
       width: 100,
     },
-    { field: 'Name', title: '调用名称' },
-    { field: 'Link_url', title: '链接' },
-    { field: 'Is_lock', title: '状态', slots: { default: 'open' } },
-    { fixed: 'right', title: '操作', slots: { default: 'action' }, width: 100 },
+    { field: 'Name', title: $t('user.menu.invoke') },
+    { field: 'Link_url', title: $t('user.menu.link') },
+    {
+      field: 'Is_lock',
+      title: $t('preferences.status.type'),
+      slots: { default: 'open' },
+    },
+    {
+      fixed: 'right',
+      title: $t('preferences.button.type'),
+      slots: { default: 'action' },
+      width: 100,
+    },
   ],
   pagerConfig: {
     enabled: false,
@@ -114,7 +124,7 @@ const handleDelete = async () => {
   const IdArr = data.map((item) => item.Id).join(',');
   await postMenuDeleteApi({ IdArr });
   await gridApi.query();
-  message.success('删除成功');
+  message.success($t('preferences.message.delete'));
 };
 </script>
 
@@ -123,10 +133,18 @@ const handleDelete = async () => {
     <Grid table-title="菜单列表" table-title-help="展开后才能选中下面的子集">
       <template #toolbar-tools>
         <div class="flex gap-2">
-          <Button type="primary" @click="expandAll"> 展开全部 </Button>
-          <Button type="primary" @click="collapseAll"> 折叠全部 </Button>
-          <Button type="primary" @click="handleAdd"> 添加 </Button>
-          <Button @click="handleDelete" type="primary" danger>删除</Button>
+          <Button type="primary" @click="expandAll">
+            {{ $t('preferences.button.expand') }}
+          </Button>
+          <Button type="primary" @click="collapseAll">
+            {{ $t('preferences.button.fold') }}
+          </Button>
+          <Button type="primary" @click="handleAdd">
+            {{ $t('preferences.button.add') }}
+          </Button>
+          <Button @click="handleDelete" type="primary" danger>
+            {{ $t('preferences.button.delete') }}
+          </Button>
         </div>
       </template>
       <template #icon="{ row }">
@@ -138,7 +156,9 @@ const handleDelete = async () => {
         <Switch v-model:checked="row.Is_lock" disabled />
       </template>
       <template #action="{ row }">
-        <Button @click="handleEdit(row)" type="primary">编辑</Button>
+        <Button @click="handleEdit(row)" type="primary">
+          {{ $t('preferences.button.edit') }}
+        </Button>
       </template>
     </Grid>
     <BaseModal />

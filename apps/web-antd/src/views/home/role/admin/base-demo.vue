@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UserApi } from '#/api/core/user';
+import type { AdministratorApi } from '#/api';
 
 import { useVbenForm, useVbenModal, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -9,25 +9,7 @@ import { message } from 'ant-design-vue';
 import { getAdminDetailApi, getRoleTypeListApi, postAdminAddApi } from '#/api';
 
 defineOptions({
-  name: 'BaseDemo',
-});
-
-const [Modal, modalApi] = useVbenModal({
-  onCancel() {
-    modalApi.close();
-  },
-  onClosed() {
-    beforeClose();
-  },
-  async onOpenChange(isOpen: boolean) {
-    if (isOpen) {
-      const { edit, data } = modalApi.getData<Record<string, any>>();
-      if (!data || (!data.Id && !edit)) return;
-      handleChange(data.Id);
-    }
-  },
-  showCancelButton: false,
-  showConfirmButton: false,
+  name: 'BaseDemoAdmin',
 });
 
 const [Form, formApi] = useVbenForm({
@@ -36,15 +18,11 @@ const [Form, formApi] = useVbenForm({
       class: 'w-full',
     },
   },
-  handleSubmit: onSubmit,
   layout: 'horizontal',
   schema: [
     {
       component: 'Input',
       defaultValue: 0,
-      componentProps: {
-        placeholder: '请输入',
-      },
       disabled: true,
       fieldName: 'Id',
       label: 'Id',
@@ -52,7 +30,7 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'ApiSelect',
       componentProps: {
-        afterFetch: (data: UserApi.roleTypeListResult[]) => {
+        afterFetch: (data: AdministratorApi.roleTypeListResult[]) => {
           return data.map((item) => ({
             label: item.Name,
             value: item.Id,
@@ -61,14 +39,11 @@ const [Form, formApi] = useVbenForm({
         api: getRoleTypeListApi,
       },
       fieldName: 'roleId',
-      label: '角色类型',
+      label: $t('preferences.type.role'),
       rules: 'selectRequired',
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'userName',
       label: $t('authentication.username'),
       rules: 'required',
@@ -77,7 +52,7 @@ const [Form, formApi] = useVbenForm({
       component: 'Switch',
       defaultValue: false,
       fieldName: 'isLock',
-      label: '锁定账户',
+      label: $t('user.lock'),
       componentProps: {
         class: 'w-min',
       },
@@ -113,20 +88,14 @@ const [Form, formApi] = useVbenForm({
     },
     {
       component: 'InputNumber',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'MobileCountryCode',
-      label: '国家码',
+      label: $t('user.nation'),
       rules: 'required',
     },
     {
       component: 'VbenInput',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'mobile',
-      label: '手机号',
+      label: $t('preferences.user.phone'),
       rules: z
         .string()
         .min(1, { message: $t('authentication.mobileTip') })
@@ -136,34 +105,55 @@ const [Form, formApi] = useVbenForm({
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'realName',
-      label: '姓名',
+      label: $t('preferences.user.name'),
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
+
       fieldName: 'email',
       label: $t('authentication.email'),
     },
   ],
-  resetButtonOptions: {
-    content: '取消',
+  submitButtonOptions: {
+    show: false,
   },
-  handleReset: onReset,
+  resetButtonOptions: {
+    show: false,
+  },
   wrapperClass: 'grid-cols-1',
 });
 
-function beforeClose() {
-  formApi.resetForm();
-  modalApi.setData({
-    edit: true,
-  });
-}
+const [Modal, modalApi] = useVbenModal({
+  onCancel() {
+    modalApi.close();
+  },
+  async onConfirm() {
+    const { valid } = await formApi.validate();
+    if (!valid) return;
+    const formData = await formApi.getValues();
+    await postAdminAddApi(formData as any);
+    if (formData.Id === 0) {
+      message.success($t('preferences.message.add'));
+    } else {
+      message.success($t('preferences.message.edit'));
+    }
+    modalApi.close();
+  },
+  async onOpened() {
+    const { edit, data } = modalApi.getData<Record<string, any>>();
+    if (!data || (!data.Id && !edit)) return;
+    handleChange(data.Id);
+  },
+  onClosed() {
+    formApi.resetForm();
+    modalApi.setData({
+      edit: true,
+    });
+  },
+  showCancelButton: true,
+  showConfirmButton: true,
+});
 
 async function handleChange(Id: number) {
   const res = await getAdminDetailApi({ Id });
@@ -178,23 +168,13 @@ async function handleChange(Id: number) {
     realName: res.Realname,
   });
 }
-function onReset() {
-  modalApi.close();
-}
-
-async function onSubmit(values: Record<string, any>) {
-  values.isLock = values.isLock ? 1 : 0;
-  await postAdminAddApi(values as any);
-  if (values.Id !== 0) {
-    message.success('编辑成功');
-    return;
-  }
-  message.success('添加成功');
-  modalApi.close();
-}
 </script>
 <template>
-  <Modal class="w-[800px]" title="管理员" title-tooltip="添加编辑">
+  <Modal
+    class="w-[800px]"
+    :title="$t('user.tips.admin')"
+    :title-tooltip="$t('user.tips.admin_tips')"
+  >
     <Form />
   </Modal>
 </template>

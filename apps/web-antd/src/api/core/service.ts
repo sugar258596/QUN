@@ -2,16 +2,17 @@ import type {
   AuditParams,
   DeleteParams,
   DetailParams,
+  OrdinaryApi,
   Pagination,
   SystemApi,
-  UserApi,
 } from '#/api';
 
 import { requestClient } from '#/api/request';
 
 export namespace ServiceApi {
   /** 客服列表返回值 */
-  export interface GetCustomerListResult extends UserApi.GetUserDetailResult {
+  export interface GetCustomerListResult
+    extends OrdinaryApi.GetUserDetailResult {
     /** 邀请码 */
     InviteCode: number;
     /** 佣金 */
@@ -36,7 +37,7 @@ export namespace ServiceApi {
 
   /** 客服申请列表返回值 */
   export interface GetCustomerApplyListResult
-    extends UserApi.GetUserDetailResult {
+    extends OrdinaryApi.GetUserDetailResult {
     /** 用户Id */
     MemberId: number;
     /** 用户昵称 */
@@ -75,7 +76,7 @@ export namespace ServiceApi {
 
   /** 代理客服业绩列表请求参数 */
   export interface GetAgentAchievementParams
-    extends Omit<UserApi.GetUserListParams, 'IsPlus' | 'Sex'>,
+    extends Omit<OrdinaryApi.GetUserListParams, 'IsPlus' | 'Sex'>,
       Pagination {
     /** 代理Id */
     Id: number;
@@ -107,7 +108,7 @@ enum Api {
  * @returns
  */
 export function GetCustomerList(
-  params: Omit<UserApi.GetUserListParams, 'IsPlus'> & Pagination,
+  params: Omit<OrdinaryApi.GetUserListParams, 'IsPlus'> & Pagination,
 ) {
   return requestClient.post<ServiceApi.GetCustomerListResult[]>(
     Api.GET_CUSTOMETR_LIST,
@@ -176,7 +177,7 @@ export function DeleteCustomer(params: DeleteParams) {
 export function GetAgentAchievement(
   params: ServiceApi.GetAgentAchievementParams,
 ) {
-  return requestClient.post<UserApi.GetUserFlowDetailResult[]>(
+  return requestClient.post<OrdinaryApi.GetUserFlowDetailResult[]>(
     Api.GET_AGENT_ACHIEVEMENT,
     params,
   );

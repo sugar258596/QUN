@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { UserApi } from '#/api';
+import type { RealNameApi } from '#/api';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -35,6 +35,8 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.close();
   },
   async onConfirm() {
+    const { valid } = await formApi.validate();
+    if (!valid) return;
     const { edit } = modalApi.getData<Record<string, any>>();
     if (edit) return;
     const formData = await formApi.getValues();
@@ -67,7 +69,7 @@ const [Modal, modalApi] = useVbenModal({
   showCancelButton: true,
   showConfirmButton: true,
 });
-async function handleEdit(data: UserApi.RealNameListResult) {
+async function handleEdit(data: RealNameApi.RealNameListResult) {
   const schemas = [
     {
       component: 'Input',
@@ -106,7 +108,7 @@ async function handleEdit(data: UserApi.RealNameListResult) {
   });
 }
 
-async function handleDetails(data: UserApi.RealNameListResult) {
+async function handleDetails(data: RealNameApi.RealNameListResult) {
   const schemas = [
     {
       component: 'Input',

@@ -57,6 +57,8 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.close();
   },
   async onConfirm() {
+    const { valid } = await formApi.validate();
+    if (!valid) return;
     const formData = await formApi.getValues();
     await UpdateCustomerApply(formData as any);
     message.success($t('preferences.message.edit'));

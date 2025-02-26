@@ -166,28 +166,20 @@ const [Modal, modalApi] = useVbenModal({
     modalApi.close();
   },
   onConfirm() {
+    const { edit, data } = modalApi.getData<Record<string, any>>();
+    if (!data || (!data.Id && !edit)) return;
+    handleChange(data.Id);
     modalApi.close();
   },
   onClosed() {
-    beforeClose();
-  },
-  async onOpenChange(isOpen: boolean) {
-    if (isOpen) {
-      const { edit, data } = modalApi.getData<Record<string, any>>();
-      if (!data || (!data.Id && !edit)) return;
-      handleChange(data.Id);
-    }
+    formApi.resetForm();
+    modalApi.setData({
+      edit: true,
+    });
   },
   showCancelButton: true,
   showConfirmButton: true,
 });
-
-function beforeClose() {
-  formApi.resetForm();
-  modalApi.setData({
-    edit: true,
-  });
-}
 
 async function handleChange(Id: number) {
   const res = await getUserFlowDetail({ Id });

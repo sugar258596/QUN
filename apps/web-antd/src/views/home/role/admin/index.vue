@@ -2,6 +2,7 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { AdministratorApi } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
@@ -9,44 +10,55 @@ import { Button, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getAdminListApi, postAdminDeleteApi } from '#/api';
+import { $t } from '#/locales';
 
 import BaseDemo from './base-demo.vue';
-import { formSchema, tableColumns } from './data';
-
-interface RowType {
-  category: string;
-  color: string;
-  id: string;
-  imageUrl: string;
-  open: boolean;
-  price: string;
-  productName: string;
-  releaseDate: string;
-  status: 'error' | 'success' | 'warning';
-}
 
 const formOptions: VbenFormProps = {
   collapsed: false,
   wrapperClass: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-  schema: formSchema,
+  schema: [
+    {
+      component: 'Input',
+      componentProps: {
+        placeholder: $t('service.tips.user'),
+      },
+      defaultValue: '',
+      fieldName: 'Keywords',
+      label: $t('preferences.button.inquire'),
+    },
+  ],
   showCollapseButton: false,
   submitButtonOptions: {
-    content: '查询',
+    content: $t('preferences.button.inquire'),
   },
   resetButtonOptions: {
-    content: '添加',
+    content: $t('preferences.button.add'),
   },
   handleReset: onReset,
   submitOnChange: true,
   submitOnEnter: true,
 };
 
-const gridOptions: VxeTableGridOptions<RowType> = {
+const gridOptions: VxeTableGridOptions<AdministratorApi.adminDetailResult> = {
   checkboxConfig: {
     highlight: true,
     labelField: 'Name',
   },
-  columns: tableColumns,
+  columns: [
+    { align: 'center', type: 'checkbox', width: 40 },
+    { field: 'Id', title: 'ID' },
+    { field: 'Username', title: $t('preferences.user.account') },
+    { field: 'Mobile', title: $t('preferences.user.phone') },
+    { field: 'Realname', title: $t('preferences.user.name') },
+    { field: 'AddTime', title: $t('preferences.time.register') },
+    {
+      fixed: 'right',
+      title: $t('preferences.button.type'),
+      slots: { default: 'action' },
+      width: 120,
+    },
+  ],
   exportConfig: {},
   height: 'auto',
   keepSource: true,
@@ -102,7 +114,7 @@ async function handleDelete() {
   const IdArr = data.map((item) => item.Id).join(',');
   await postAdminDeleteApi({ IdArr });
   await gridApi.query();
-  message.success('删除成功');
+  message.success($t('preferences.message.delete'));
 }
 </script>
 
@@ -111,11 +123,15 @@ async function handleDelete() {
     <Grid>
       <template #toolbar-tools>
         <div class="flex gap-2">
-          <Button @click="handleDelete" type="primary" danger>删除</Button>
+          <Button @click="handleDelete" type="primary" danger>
+            {{ $t('preferences.button.delete') }}
+          </Button>
         </div>
       </template>
       <template #action="{ row }">
-        <Button @click="handleEdit(row)" type="primary">编辑</Button>
+        <Button @click="handleEdit(row)" type="primary">
+          {{ $t('preferences.button.edit') }}
+        </Button>
       </template>
     </Grid>
     <BaseModal />

@@ -1,17 +1,45 @@
 <script lang="ts" setup>
-import type { UserApi } from '#/api/core/user';
+import type { AdministratorApi } from '#/api';
+
+import { reactive } from 'vue';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 
 import { message } from 'ant-design-vue';
 
 import { getMenuDetailApi, getMenuTopListApi, postMenuAddApi } from '#/api';
-
-import { checkboxGroupData } from './table-data';
+import { $t } from '#/locales';
 
 defineOptions({
-  name: 'BaseDemo',
+  name: 'BaseDemoMenu',
 });
+
+const checkboxGroupData = reactive([
+  {
+    label: $t('user.checkbox.show'),
+    value: 'Show',
+  },
+  {
+    label: $t('user.checkbox.view'),
+    value: 'View',
+  },
+  {
+    label: $t('user.checkbox.add'),
+    value: 'Add',
+  },
+  {
+    label: $t('user.checkbox.edit'),
+    value: 'Edit',
+  },
+  {
+    label: $t('user.checkbox.delete'),
+    value: 'Delete',
+  },
+  {
+    label: $t('user.checkbox.audit'),
+    value: 'Audit',
+  },
+]);
 
 const [Form, formApi] = useVbenForm({
   commonConfig: {
@@ -19,15 +47,12 @@ const [Form, formApi] = useVbenForm({
       class: 'w-full',
     },
   },
-  handleSubmit: onSubmit,
+
   layout: 'horizontal',
   schema: [
     {
       component: 'Input',
       defaultValue: 0,
-      componentProps: {
-        placeholder: '请输入',
-      },
       disabled: true,
       fieldName: 'Id',
       label: 'Id',
@@ -35,7 +60,7 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'ApiSelect',
       componentProps: {
-        afterFetch: (data: UserApi.menuTopListResult[]) => {
+        afterFetch: (data: AdministratorApi.menuTopListResult[]) => {
           return data.map((item) => ({
             label: item.Title,
             value: item.Id,
@@ -44,65 +69,50 @@ const [Form, formApi] = useVbenForm({
         api: getMenuTopListApi,
         allowClear: true,
         filterOption: true,
-        placeholder: '请选择',
         showSearch: true,
       },
       fieldName: 'parentId',
-      label: '上级菜单',
+      label: $t('user.menu.superiors'),
       rules: 'required',
     },
     {
       component: 'InputNumber',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'sortId',
-      label: '级别',
+      label: $t('user.menu.level'),
       rules: 'required',
     },
     {
       component: 'Switch',
       fieldName: 'isLock',
       defaultValue: false,
-      label: '隐藏',
+      label: $t('user.menu.hide'),
       componentProps: {
         class: 'w-min',
       },
-      rules: 'required',
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'Name',
-      label: '名称',
+      label: $t('user.menu.name'),
       rules: 'required',
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
+
       fieldName: 'Title',
-      label: '标题',
+      label: $t('preferences.title'),
       rules: 'required',
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
+
       fieldName: 'iconUrl',
-      label: '图标',
+      label: $t('user.menu.icon'),
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'linkUrl',
-      label: '链接地址',
+      label: $t('user.menu.link'),
     },
     {
       component: 'CheckboxGroup',
@@ -111,17 +121,17 @@ const [Form, formApi] = useVbenForm({
         options: checkboxGroupData,
       },
       fieldName: 'actionType',
-      label: '权限',
-      help: '当前拥有的查看权限',
+      label: $t('user.menu.limits'),
+      help: $t('user.tips.help'),
       rules: 'selectRequired',
     },
   ],
   wrapperClass: 'grid-cols-1',
-  resetButtonOptions: {
-    content: '取消',
+  submitButtonOptions: {
+    show: false,
   },
-  handleReset: () => {
-    handleReset();
+  resetButtonOptions: {
+    show: false,
   },
 });
 
@@ -129,49 +139,50 @@ const [Modal, modalApi] = useVbenModal({
   onCancel() {
     modalApi.close();
   },
+  async onConfirm() {
+    const { valid } = await formApi.validate();
+    if (!valid) return;
+    const formData = await formApi.getValues();
+    formData.isLock = formData.isLock ? 1 : 0;
+    formData.actionType = formData.actionType.join(',');
+    await postMenuAddApi(formData as any);
+    if (formData.Id === 0) {
+      message.success($t('preferences.message.add'));
+    } else {
+      message.success($t('preferences.message.edit'));
+    }
+    modalApi.close();
+  },
+  async onOpened() {
+    const { edit, data } = modalApi.getData<Record<string, any>>();
+    if (!data || (!data.Id && !edit)) return;
+    const res = await getMenuDetailApi({ Id: data.Id });
+    formApi.setValues({
+      Id: res.Id,
+      parentId: res.Parent_id,
+      sortId: res.Sort_id,
+      isLock: res.Is_lock ? 1 : 0,
+      Name: res.Name,
+      Title: res.Title,
+      iconUrl: res.Icon_url,
+      linkUrl: res.Link_url,
+      actionType: res.Action_type.split(','),
+    });
+  },
   onClosed() {
     formApi.resetForm();
   },
-  async onOpenChange(isOpen: boolean) {
-    if (isOpen) {
-      const { edit, data } = modalApi.getData<Record<string, any>>();
-      if (!data || (!data.Id && !edit)) return;
-      const res = await getMenuDetailApi({ Id: data.Id });
-      formApi.setValues({
-        Id: res.Id,
-        parentId: res.Parent_id,
-        sortId: res.Sort_id,
-        isLock: res.Is_lock ? 1 : 0,
-        Name: res.Name,
-        Title: res.Title,
-        iconUrl: res.Icon_url,
-        linkUrl: res.Link_url,
-        actionType: res.Action_type.split(','),
-      });
-    }
-  },
-  showCancelButton: false,
-  showConfirmButton: false,
+
+  showCancelButton: true,
+  showConfirmButton: true,
 });
-
-function handleReset() {
-  modalApi.close();
-}
-
-async function onSubmit(values: Record<string, any>) {
-  values.isLock = values.isLock ? 1 : 0;
-  values.actionType = values.actionType.join(',');
-  await postMenuAddApi(values as any);
-  if (values.Id !== 0) {
-    message.success('编辑成功');
-    return;
-  }
-  message.success('添加成功');
-  modalApi.close();
-}
 </script>
 <template>
-  <Modal class="w-[800px]" title="菜单详情" title-tooltip="添加编辑">
+  <Modal
+    class="w-[800px]"
+    :title="$t('user.tips.menu')"
+    :title-tooltip="$t('user.tips.menu_tips')"
+  >
     <Form />
   </Modal>
 </template>

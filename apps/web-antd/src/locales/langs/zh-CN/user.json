@@ -4,6 +4,8 @@
   "amount": "余额",
   "regtime": "注册时间",
   "inviteCode": "邀请码",
+  "nation": "国家码",
+  "lock": "锁定账户",
   "real": {
     "type": "实名认证",
     "examine": "实名认证审核",
@@ -16,5 +18,39 @@
     "no": "普通用户",
     "yes": "PLUS 会员"
   },
-  "identity": "身份证"
+  "identity": "身份证",
+  "tips": {
+    "admin": "管理员",
+    "admin_tips": "管理员添加编辑",
+    "role": "角色详情",
+    "role_tips": "角色添加编辑",
+    "menu": "菜单详情",
+    "menu_tips": "菜单添加编辑",
+    "help": "当前拥有的查看权限"
+  },
+  "role": {
+    "name": "角色名称",
+    "type": "角色类型",
+    "1": "超级管理员",
+    "0": "普通管理员"
+  },
+  "checkbox": {
+    "show": "显示",
+    "view": "查看",
+    "add": "添加",
+    "edit": "修改",
+    "delete": "删除",
+    "audit": "审核"
+  },
+  "menu": {
+    "name": "菜单名称",
+    "icon": "图标",
+    "path": "菜单路径",
+    "invoke": "调用名称",
+    "link": "链接地址",
+    "level": "菜单级别",
+    "superiors": "上级菜单",
+    "limits": "权限",
+    "hide": "隐藏"
+  }
 }

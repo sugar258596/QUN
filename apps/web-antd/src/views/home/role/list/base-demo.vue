@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import type { UserApi } from '#/api/core/user';
+import type { AdministratorApi } from '#/api';
+
+import { reactive } from 'vue';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 
@@ -11,8 +13,7 @@ import {
   getRoleTypeListApi,
   postRoleAddApi,
 } from '#/api';
-
-import { checkboxGroupData } from './data';
+import { $t } from '#/locales';
 
 defineOptions({
   name: 'BaseDemo',
@@ -36,26 +37,32 @@ interface SchemaResult {
 
 const arr = new Set(['Id', 'roleName', 'roleType']);
 
-const [Modal, modalApi] = useVbenModal({
-  onCancel() {
-    modalApi.close();
+const checkboxGroupData = reactive([
+  {
+    label: $t('user.checkbox.show'),
+    value: 'Show',
   },
-  onClosed() {
-    beforeClose();
+  {
+    label: $t('user.checkbox.view'),
+    value: 'View',
   },
-  async onOpenChange(isOpen: boolean) {
-    if (isOpen) {
-      const { edit, data } = modalApi.getData<Record<string, any>>();
-      if (!data || (!data.Id && !edit)) {
-        handleSetState();
-        return;
-      }
-      handleChange(data.Id);
-    }
+  {
+    label: $t('user.checkbox.add'),
+    value: 'Add',
   },
-  showCancelButton: false,
-  showConfirmButton: false,
-});
+  {
+    label: $t('user.checkbox.edit'),
+    value: 'Edit',
+  },
+  {
+    label: $t('user.checkbox.delete'),
+    value: 'Delete',
+  },
+  {
+    label: $t('user.checkbox.audit'),
+    value: 'Audit',
+  },
+]);
 
 const [Form, formApi] = useVbenForm({
   commonConfig: {
@@ -63,15 +70,11 @@ const [Form, formApi] = useVbenForm({
       class: 'w-full',
     },
   },
-  handleSubmit: onSubmit,
   layout: 'horizontal',
   schema: [
     {
       component: 'Input',
       defaultValue: 0,
-      componentProps: {
-        placeholder: '请输入',
-      },
       disabled: true,
       fieldName: 'Id',
       label: 'Id',
@@ -79,7 +82,7 @@ const [Form, formApi] = useVbenForm({
     {
       component: 'ApiSelect',
       componentProps: {
-        afterFetch: (data: UserApi.roleTypeListResult[]) => {
+        afterFetch: (data: AdministratorApi.roleTypeListResult[]) => {
           return data.map((item) => ({
             label: item.Name,
             value: item.Id,
@@ -88,66 +91,81 @@ const [Form, formApi] = useVbenForm({
         api: getRoleTypeListApi,
       },
       fieldName: 'roleType',
-      label: '角色类型',
+      label: $t('user.role.type'),
       rules: 'selectRequired',
     },
     {
       component: 'Input',
-      componentProps: {
-        placeholder: '请输入',
-      },
       fieldName: 'roleName',
-      label: '名称',
+      label: $t('user.role.name'),
       rules: 'required',
     },
   ],
   wrapperClass: 'grid-cols-1',
-  resetButtonOptions: {
-    content: '取消',
+  submitButtonOptions: {
+    show: false,
   },
-  handleReset: () => {
-    modalApi.close();
+  resetButtonOptions: {
+    show: false,
   },
 });
 
-async function onSubmit(values: Record<string, any>) {
-  const authArr: any[] = [];
-  const { Id, roleName, roleType, ...data } = values;
-  for (const key in data) {
-    if (!data[key]) continue;
-    const obj = {
-      Name: key,
-      ActionType: data[key]?.join(','),
+const [Modal, modalApi] = useVbenModal({
+  onCancel() {
+    modalApi.close();
+  },
+  async onConfirm() {
+    const { valid } = await formApi.validate();
+    if (!valid) return;
+    const values = await formApi.getValues();
+    const authArr: any[] = [];
+    const { Id, roleName, roleType, ...data } = values;
+    for (const key in data) {
+      if (!data[key]) continue;
+      const obj = {
+        Name: key,
+        ActionType: data[key]?.join(','),
+      };
+      authArr.push(obj);
+    }
+    const formData = {
+      Id,
+      roleName,
+      roleType,
+      authorityJson: JSON.stringify(authArr),
     };
-    authArr.push(obj);
-  }
-  const formData = {
-    Id,
-    roleName,
-    roleType,
-    authorityJson: JSON.stringify(authArr),
-  };
-  await postRoleAddApi(formData as any);
-  if (values.Id !== 0) {
-    message.success('编辑成功');
-    return;
-  }
-  message.success('添加成功');
-  modalApi.close();
-}
+    await postRoleAddApi(formData as any);
+    if (values.Id === 0) {
+      message.success($t('preferences.message.add'));
+    } else {
+      message.success($t('preferences.message.edit'));
+    }
+    modalApi.close();
+  },
+  async onOpened() {
+    const { edit, data } = modalApi.getData<Record<string, any>>();
+    if (!data || (!data.Id && !edit)) {
+      handleSetState();
+      return;
+    }
+    handleChange(data.Id);
+  },
+  onClosed() {
+    modalApi.setData({
+      edit: true,
+    });
 
-function beforeClose() {
-  modalApi.setData({
-    edit: true,
-  });
+    formApi.resetForm();
+    formApi.setState((prev) => {
+      return {
+        schema: prev.schema?.filter((item) => arr.has(item.fieldName)),
+      };
+    });
+  },
+  showCancelButton: true,
+  showConfirmButton: true,
+});
 
-  formApi.resetForm();
-  formApi.setState((prev) => {
-    return {
-      schema: prev.schema?.filter((item) => arr.has(item.fieldName)),
-    };
-  });
-}
 async function handleChange(Id: number) {
   const res = await getRoleDetailApi({ Id });
   const values = transformValue(res.RoleList);
@@ -169,14 +187,16 @@ async function handleSetState() {
   });
 }
 
-function transformData(data: UserApi.roleAuthorityResult[]): SchemaResult[] {
+function transformData(
+  data: AdministratorApi.roleAuthorityResult[],
+): SchemaResult[] {
   const stateData: SchemaResult[] = [];
   traverseData(data, stateData);
   return stateData;
 }
 
 function transformValue(
-  data: UserApi.roleAuthorityResult[],
+  data: AdministratorApi.roleAuthorityResult[],
 ): Record<string, string[]> {
   const stateData: Record<string, string[]> = {};
   traverseValue(data, stateData);
@@ -184,7 +204,7 @@ function transformValue(
 }
 
 function traverseData(
-  items: UserApi.roleAuthorityResult[],
+  items: AdministratorApi.roleAuthorityResult[],
   stateData: SchemaResult[],
 ): void {
   for (const item of items) {
@@ -197,7 +217,7 @@ function traverseData(
 }
 
 function traverseValue(
-  items: UserApi.roleAuthorityResult[],
+  items: AdministratorApi.roleAuthorityResult[],
   stateData: Record<string, string[]>,
 ): void {
   for (const item of items) {
@@ -232,7 +252,7 @@ function getCheckboxGroupOptions(
 }
 
 function createSchema(
-  item: UserApi.roleAuthorityResult,
+  item: AdministratorApi.roleAuthorityResult,
   options: CheckboxGroupOption[],
 ): SchemaResult {
   return {
@@ -247,7 +267,7 @@ function createSchema(
 }
 
 function updateFormSchema(
-  item: UserApi.roleAuthorityResult,
+  item: AdministratorApi.roleAuthorityResult,
   options: CheckboxGroupOption[],
 ): void {
   const schemaItem = createSchema(item, options);
@@ -257,7 +277,11 @@ function updateFormSchema(
 }
 </script>
 <template>
-  <Modal class="w-[800px]" title="角色管理" title-tooltip="菜单权限初始默认值">
+  <Modal
+    class="w-[800px]"
+    :title="$t('user.tips.role')"
+    :title-tooltip="$t('user.tips.role_tips')"
+  >
     <Form />
   </Modal>
 </template>
