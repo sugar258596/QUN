@@ -1,6 +1,4 @@
-import type { UserApi } from './index';
-
-import type { DeleteParams, DetailParams, Pagination } from '#/api/parameter';
+import type { DeleteParams, DetailParams, Pagination, UserApi } from '#/api';
 
 import { requestClient } from '#/api/request';
 

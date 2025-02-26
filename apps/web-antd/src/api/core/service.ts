@@ -1,6 +1,11 @@
-import type { SystemApi, UserApi } from './index';
-
-import type { DeleteParams, DetailParams, Pagination } from '#/api/parameter';
+import type {
+  AuditParams,
+  DeleteParams,
+  DetailParams,
+  Pagination,
+  SystemApi,
+  UserApi,
+} from '#/api';
 
 import { requestClient } from '#/api/request';
 
@@ -51,18 +56,9 @@ export namespace ServiceApi {
     /** 审核时间 */
     UpdateTime: string;
   }
-  /** 客服审核*/
-  export interface UpdateCustomerApplyParams {
-    /** 客服Id */
-    Id: number;
-    /** 0-审核通过   2-审核不通过  */
-    Status: number;
-    /** 审核备注 */
-    Keywords: string;
-  }
 
   /** 客服申请修改 */
-  export interface UpdateCustomerParams extends UpdateCustomerApplyParams {
+  export interface UpdateCustomerParams extends AuditParams {
     /** 客服Id */
     Id: number;
     /** 姓名 */
@@ -150,9 +146,7 @@ export function GetCustomerDetail(params: DetailParams) {
  * @param params
  * @returns
  */
-export function UpdateCustomerApply(
-  params: ServiceApi.UpdateCustomerApplyParams,
-) {
+export function UpdateCustomerApply(params: AuditParams) {
   return requestClient.post(Api.UPDATE_CUSTOMER_APPLY, params);
 }
 

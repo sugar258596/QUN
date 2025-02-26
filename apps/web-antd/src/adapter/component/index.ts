@@ -53,6 +53,7 @@ export type ComponentType =
   | 'ApiSelect'
   | 'ApiTreeSelect'
   | 'AutoComplete'
+  | 'CellImage'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'DatePicker'

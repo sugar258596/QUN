@@ -17,3 +17,13 @@ export interface DeleteParams {
   /** 需要删除的Id */
   IdArr: string;
 }
+
+/** 审核请求参数 */
+export interface AuditParams {
+  /** Id */
+  Id: number;
+  /** 0-审核通过   2-审核不通过  */
+  Status: number;
+  /** 审核备注 */
+  Keywords: string;
+}

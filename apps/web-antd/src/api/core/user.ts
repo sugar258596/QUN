@@ -1,4 +1,9 @@
-import type { DeleteParams, DetailParams, Pagination } from '#/api/parameter';
+import type {
+  AuditParams,
+  DeleteParams,
+  DetailParams,
+  Pagination,
+} from '#/api';
 
 import { requestClient } from '#/api/request';
 
@@ -168,12 +173,15 @@ export namespace UserApi {
   }
   /** 用户基础信息 */
   export interface GetUserDetailResult {
-    /** 用户ID */
+    /** ID */
     Id: number;
     /** 头像 */
     Avatar: string;
+    /** 用户ID */
+    MemberId: number;
     /** 昵称 */
     NickName: string;
+    UserNick: string;
     /** 是否会员 0-否 1-是 */
     IsPlus: number;
     /** 是否实名 0-否 1-是 */
@@ -251,6 +259,24 @@ export namespace UserApi {
     /** 备注 */
     Remark: string;
   }
+
+  /** 实名制列表返回参数 */
+  export interface RealNameListResult extends GetUserDetailResult {
+    /** 姓名 */
+    Name: string;
+    /** 身份证号 */
+    IDnumber: string;
+    /** 国家码 */
+    CountryCode: number;
+    /** 审核备注 */
+    ReviewComments: string;
+    /** 申请时间 */
+    AddTime: string;
+    /** 审核时间 */
+    UpdateTime: string;
+    /** 证明图片 */
+    AdditionalInfo: string[];
+  }
 }
 
 enum Api {
@@ -269,30 +295,39 @@ enum Api {
   GET_MENU_LIST = '/api/System/MenuList',
   /** 获取菜单列表的顶级菜单 */
   GET_MENU_TOP_LIST = '/api/System/TopMenuBox',
+  /** 获取实名详情 */
+  GET_REAL_NAME_DETAIL = '/api/RealName/RealNameDetails',
+  /** 获取实名制列表 */
+  GET_REAL_NAME_LIST = '/api/RealName/CustomerServiceList',
   /** 获取角色权限资源 */
   GET_ROLE_AUTHORITY = '/api/System/ShowMenuInfo',
+
   /** 获取角色详情 */
   GET_ROLE_DETAIL = '/api/System/RoleInfo',
+
   /** 获取角色列表 */
   GET_ROLE_LIST = '/api/System/RoleList',
-
   /** 获取角色类型数据 */
   GET_ROLE_TYPE_LIST = '/api/System/GetRoleTypeList',
   /** 获取用户流水详情 */
   GET_USER_FLOW_DETAIL = '/api/User/UserWalletLogDetails',
   /** 获取用户流水列表 */
   GET_USER_FLOW_LIST = '/api/User/UserWalletLogList',
+
   /** 获取普通用户列表 */
   GET_USER_LIST = '/api/User/UserList',
   /** 新增/修改管理员*/
   POST_ADMIN_ADD = '/api/System/AddOrEditAdmin',
   /** 删除管理员 */
   POST_ADMIN_DELETE = '/api/System/DelAdmin',
+
   /** 新增/修改菜单 */
   POST_MENU_ADD = '/api/System/AddOrEditMenu',
-
   /** 删除菜单 */
   POST_MENU_DELETE = '/api/System/DelMenu',
+
+  /** 实名制审核 */
+  POST_REAL_NAME_CHECK = '/api/RealName/IdentityVerificationIs',
   /** 新增/修改角色 */
   POST_ROLE_ADD = '/api/System/AddOrEditRole',
   /** 删除角色 */
@@ -486,7 +521,7 @@ export async function getBehaviorLogApi(params?: any) {
  * @param params
  * @returns
  */
-export function getUserList(params: UserApi.GetUserListParams) {
+export function getUserList(params: Pagination & UserApi.GetUserListParams) {
   return requestClient.post<UserApi.GetUserListResult[]>(
     Api.GET_USER_LIST,
     params,
@@ -515,4 +550,39 @@ export function getUserFlowDetail(params: DetailParams) {
     Api.GET_USER_FLOW_DETAIL,
     params,
   );
+}
+
+/**
+ * @description 获取实名认证列表
+ * @param params
+ * @returns
+ */
+export function getRealNameList(
+  params: Omit<UserApi.GetUserListParams, 'IsPlus'> & Pagination,
+) {
+  return requestClient.post<UserApi.RealNameListResult[]>(
+    Api.GET_REAL_NAME_LIST,
+    params,
+  );
+}
+
+/**
+ * @description 获取实名认证详情
+ * @param params
+ * @returns
+ */
+export function getRealNameDetail(params: DetailParams) {
+  return requestClient.post<UserApi.RealNameListResult>(
+    Api.GET_REAL_NAME_DETAIL,
+    params,
+  );
+}
+
+/**
+ * @description 实名认证审核
+ * @param params
+ * @returns
+ */
+export function postRealNameCheck(params: AuditParams) {
+  return requestClient.post(Api.POST_REAL_NAME_CHECK, params);
 }

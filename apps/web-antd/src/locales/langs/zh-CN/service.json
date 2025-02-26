@@ -28,6 +28,7 @@
   },
   "tips": {
     "user": "用户账号、昵称",
-    "application": "姓名，国家名称，手机号"
+    "application": "姓名，国家名称，手机号",
+    "examine": "待审核状态可以操作"
   }
 }

@@ -83,6 +83,15 @@ const routes: RouteRecordRaw[] = [
                 component: () => import('#/views/home/user/wallet/index.vue'),
               },
               {
+                path: 'real-name',
+                name: 'RealName',
+                meta: {
+                  title: $t('home.user.RealName'),
+                },
+                component: () =>
+                  import('#/views/home/user/real-name/index.vue'),
+              },
+              {
                 path: 'consumption-ranking',
                 name: 'ConsumptionRanking',
                 meta: {

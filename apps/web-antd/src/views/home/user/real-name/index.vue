@@ -4,21 +4,25 @@ import type { VbenFormProps } from '@vben/common-ui';
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { UserApi } from '#/api';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 
-import { Image, Switch, Tag } from 'ant-design-vue';
+import { Button, Image, Tag } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getUserList } from '#/api';
+import { getRealNameList } from '#/api';
 import { $t } from '#/locales';
+
+import BaseDemo from './base-demo.vue';
 
 const formOptions: VbenFormProps = {
   collapsed: false,
-  wrapperClass: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-3',
+  wrapperClass: 'grid-cols-2 md:grid-cols-2 lg:grid-cols-3',
   schema: [
     {
       component: 'Input',
-      defaultValue: '',
+      componentProps: {
+        placeholder: $t('service.tips.application'),
+      },
       fieldName: 'Keywords',
       label: $t('preferences.button.inquire'),
     },
@@ -29,22 +33,26 @@ const formOptions: VbenFormProps = {
         allowClear: true,
         options: [
           {
-            label: $t('user.plus.yes'),
+            label: $t('service.examine.0'),
             value: 0,
           },
           {
-            label: $t('user.plus.no'),
+            label: $t('service.examine.1'),
             value: 1,
+          },
+          {
+            label: $t('service.examine.2'),
+            value: 2,
           },
           {
             label: $t('preferences.status.no'),
             value: -1,
           },
         ],
-        label: $t('preferences.type.user'),
+        label: $t('service.examine.type'),
       },
-      fieldName: 'IsPlus',
-      label: $t('preferences.type.user'),
+      fieldName: 'Status',
+      label: $t('service.examine.type'),
     },
     {
       component: 'Select',
@@ -67,7 +75,7 @@ const formOptions: VbenFormProps = {
         ],
         placeholder: $t('preferences.user.sex.type'),
       },
-      fieldName: 'Sex',
+      fieldName: 'Type',
       label: $t('preferences.user.sex.type'),
     },
     {
@@ -96,27 +104,23 @@ const formOptions: VbenFormProps = {
   resetButtonOptions: {
     show: false,
   },
+  handleReset: onReset,
   submitOnChange: false,
   submitOnEnter: true,
 };
 
-const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
+const gridOptions: VxeTableGridOptions<UserApi.RealNameListResult> = {
   checkboxConfig: {
     highlight: true,
     labelField: 'Name',
   },
   columns: [
-    { field: 'Id', title: 'ID' },
-    { field: 'NickName', title: $t('preferences.user.nick') },
+    { field: 'MemberId', title: $t('preferences.user.id') },
+    { field: 'UserNick', title: $t('preferences.user.nick') },
     {
       field: 'Avatar',
       title: $t('preferences.user.avatar'),
       slots: { default: 'image-url' },
-    },
-    {
-      field: 'IsPlus',
-      title: $t('user.plus.type'),
-      slots: { default: 'puls' },
     },
     {
       field: 'IsRealName',
@@ -124,23 +128,22 @@ const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
       slots: { default: 'real-name' },
     },
     {
-      field: 'Sex',
-      title: $t('preferences.user.sex.type'),
-      slots: { default: 'sex' },
-    },
-    {
-      field: 'UserCode',
-      title: $t('user.usercode'),
-      slots: { default: 'code' },
-    },
-    { field: 'Mobile', title: $t('preferences.user.phone') },
-    { field: 'Email', title: $t('preferences.user.email') },
-    { field: 'Wallet', title: $t('user.amount') },
-    { field: 'Score', title: $t('user.score') },
-    {
       field: 'Status',
-      title: $t('preferences.user.type'),
+      title: $t('preferences.status.type'),
       slots: { default: 'status' },
+    },
+    {
+      field: 'UserName',
+      title: $t('preferences.user.name'),
+    },
+    { field: 'ReviewComments', title: $t('service.remark') },
+    { field: 'AddTime', title: $t('preferences.time.apply') },
+    { field: 'UpdateTime', title: $t('preferences.time.audit') },
+    {
+      fixed: 'right',
+      title: $t('preferences.button.type'),
+      slots: { default: 'action' },
+      width: 150,
     },
   ],
   exportConfig: {},
@@ -150,7 +153,7 @@ const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        const res = await getUserList({
+        const res = await getRealNameList({
           Page: page.currentPage,
           PageSize: page.pageSize,
           ...formValues,
@@ -172,8 +175,72 @@ const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
   },
   showOverflow: false,
 };
+const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
 
-const [Grid] = useVbenVxeGrid({ formOptions, gridOptions });
+const [BaseModal, sharedModalApi] = useVbenModal({
+  connectedComponent: BaseDemo,
+  onBeforeClose: () => {
+    gridApi.query();
+  },
+});
+
+function onReset() {
+  sharedModalApi.open();
+}
+
+function handleExamine(data: any, edit?: boolean) {
+  sharedModalApi.setData({
+    edit,
+    data,
+  });
+  sharedModalApi.open();
+}
+
+function typeColor(type: number) {
+  let color = '';
+  switch (type) {
+    case 0: {
+      color = '#87d068';
+      break;
+    }
+    case 1: {
+      color = '#2db7f5';
+      break;
+    }
+    case 2: {
+      color = '#f50';
+      break;
+    }
+    default: {
+      color = '#2db7f5';
+      break;
+    }
+  }
+  return color;
+}
+
+function typeText(type: number) {
+  let text = '';
+  switch (type) {
+    case 0: {
+      text = $t('service.examine.0');
+      break;
+    }
+    case 1: {
+      text = $t('service.examine.1');
+      break;
+    }
+    case 2: {
+      text = $t('service.examine.2');
+      break;
+    }
+    default: {
+      text = $t('service.examine.2');
+      break;
+    }
+  }
+  return text;
+}
 </script>
 
 <template>
@@ -182,31 +249,22 @@ const [Grid] = useVbenVxeGrid({ formOptions, gridOptions });
       <template #image-url="{ row }">
         <Image :src="row.Avatar" height="30" width="30" />
       </template>
-      <template #real-name="{ row }">
-        <Tag :color="row.IsRealName === 0 ? 'processing' : 'error'">
-          {{ row.IsRealName === 0 ? $t('user.real.0') : $t('user.real.1') }}
-        </Tag>
-      </template>
-      <template #puls="{ row }">
-        <Tag :color="row.IsPlus === 0 ? '#87d068' : 'warning'">
-          {{ row.IsPlus === 0 ? $t('user.plus.yes') : $t('user.plus.no') }}
-        </Tag>
-      </template>
-      <template #sex="{ row }">
-        <Tag :color="row.Sex === 0 ? 'cyan' : 'magenta'">
-          {{
-            row.Sex === 0
-              ? $t('preferences.user.sex.male')
-              : $t('preferences.user.sex.female')
-          }}
-        </Tag>
-      </template>
-      <template #code="{ row }">
-        <Tag color="purple">{{ row.UserCode }}</Tag>
-      </template>
       <template #status="{ row }">
-        <Switch v-model:checked="row.Status" disabled />
+        <Tag :color="typeColor(row.Status)">
+          {{ typeText(row.Status) }}
+        </Tag>
+      </template>
+      <template #action="{ row }">
+        <div class="flex gap-2">
+          <Button @click="handleExamine(row)" type="primary">
+            {{ $t('preferences.button.examine') }}
+          </Button>
+          <Button @click="handleExamine(row, true)" type="primary">
+            {{ $t('preferences.button.detail') }}
+          </Button>
+        </div>
       </template>
     </Grid>
+    <BaseModal />
   </Page>
 </template>
