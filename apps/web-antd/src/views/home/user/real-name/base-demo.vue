@@ -41,7 +41,7 @@ const [Modal, modalApi] = useVbenModal({
     if (edit) return;
     const formData = await formApi.getValues();
     await postRealNameCheck(formData as any);
-    message.success($t('preferences.message.edit'));
+    message.success($t('preferences.message.examine'));
     modalApi.close();
   },
   async onOpened() {
@@ -215,20 +215,13 @@ async function handleDetails(data: RealNameApi.RealNameListResult) {
     },
     {
       component: 'Upload',
-      defaultValue: [
-        {
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-        {
-          url: 'https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png',
-        },
-      ],
+      defaultValue: [],
       componentProps: {
         listType: 'picture-card',
         disabled: true,
       },
       fieldName: 'AdditionalInfo',
-      label: '证明图片',
+      label: $t('service.certificate'),
     },
     {
       component: 'Input',

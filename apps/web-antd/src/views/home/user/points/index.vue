@@ -2,14 +2,14 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { RealNameApi } from '#/api';
+import type { PointsApi } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
 import { Button, Image, Tag } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getRealNameList } from '#/api';
+import { getPointsList } from '#/api';
 import { $t } from '#/locales';
 
 import BaseDemo from './base-demo.vue';
@@ -21,7 +21,7 @@ const formOptions: VbenFormProps = {
     {
       component: 'Input',
       componentProps: {
-        placeholder: $t('service.tips.application'),
+        placeholder: $t('service.tips.points'),
       },
       fieldName: 'Keywords',
       label: $t('preferences.button.inquire'),
@@ -55,30 +55,6 @@ const formOptions: VbenFormProps = {
       label: $t('service.examine.type'),
     },
     {
-      component: 'Select',
-      defaultValue: -1,
-      componentProps: {
-        allowClear: true,
-        options: [
-          {
-            label: $t('preferences.user.sex.male'),
-            value: 0,
-          },
-          {
-            label: $t('preferences.user.sex.female'),
-            value: 1,
-          },
-          {
-            label: $t('preferences.status.no'),
-            value: -1,
-          },
-        ],
-        placeholder: $t('preferences.user.sex.type'),
-      },
-      fieldName: 'Type',
-      label: $t('preferences.user.sex.type'),
-    },
-    {
       component: 'RangePicker',
       fieldName: 'rangePicker',
       dependencies: {
@@ -109,19 +85,30 @@ const formOptions: VbenFormProps = {
   submitOnEnter: true,
 };
 
-const gridOptions: VxeTableGridOptions<RealNameApi.RealNameListResult> = {
+const gridOptions: VxeTableGridOptions<PointsApi.PointsDetailResult> = {
   checkboxConfig: {
     highlight: true,
     labelField: 'Name',
   },
   columns: [
     { field: 'MemberId', title: $t('preferences.user.id'), width: 80 },
-    { field: 'UserNick', title: $t('preferences.user.nick'), width: 140 },
+    { field: 'UserNick', title: $t('preferences.user.nick') },
     {
       field: 'Avatar',
       title: $t('preferences.user.avatar'),
       slots: { default: 'image-url' },
-      width: 180,
+    },
+    { field: 'Consignee', title: $t('preferences.user.name') },
+
+    {
+      field: 'Mobile',
+      title: $t('preferences.user.phone'),
+      width: 120,
+    },
+    {
+      field: 'ScoreProductTitle',
+      title: $t('service.points.title'),
+      width: 200,
     },
     {
       field: 'Status',
@@ -130,13 +117,11 @@ const gridOptions: VxeTableGridOptions<RealNameApi.RealNameListResult> = {
       width: 140,
     },
     {
-      field: 'UserName',
-      title: $t('preferences.user.name'),
-      width: 140,
+      field: 'Remark',
+      title: $t('service.remark'),
+      width: 100,
     },
-    { field: 'ReviewComments', title: $t('service.remark'), width: 140 },
     { field: 'AddTime', title: $t('preferences.time.apply'), width: 140 },
-    { field: 'UpdateTime', title: $t('preferences.time.audit'), width: 140 },
     {
       fixed: 'right',
       title: $t('preferences.button.type'),
@@ -151,7 +136,7 @@ const gridOptions: VxeTableGridOptions<RealNameApi.RealNameListResult> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        const res = await getRealNameList({
+        const res = await getPointsList({
           Page: page.currentPage,
           PageSize: page.pageSize,
           ...formValues,
@@ -194,46 +179,46 @@ function handleExamine(data: any, edit?: boolean) {
   sharedModalApi.open();
 }
 
-function typeColor(type: number) {
+function typeColor(type: number, flag?: boolean) {
   let color = '';
   switch (type) {
     case 0: {
-      color = '#87d068';
+      color = flag ? '#87d068' : 'cyan';
       break;
     }
     case 1: {
-      color = '#2db7f5';
+      color = flag ? '#2db7f5' : 'processing';
       break;
     }
     case 2: {
-      color = '#f50';
+      color = flag ? '#f50' : 'green';
       break;
     }
     default: {
-      color = '#2db7f5';
+      color = flag ? '#f50' : 'cyan';
       break;
     }
   }
   return color;
 }
 
-function typeText(type: number) {
+function typeText(type: number, flag?: boolean) {
   let text = '';
   switch (type) {
     case 0: {
-      text = $t('service.examine.0');
+      text = flag ? $t('service.examine.0') : $t('service.withdrawal.0');
       break;
     }
     case 1: {
-      text = $t('service.examine.1');
+      text = flag ? $t('service.examine.1') : $t('service.withdrawal.1');
       break;
     }
     case 2: {
-      text = $t('service.examine.2');
+      text = flag ? $t('service.examine.2') : $t('service.withdrawal.2');
       break;
     }
     default: {
-      text = $t('service.examine.2');
+      text = flag ? $t('service.examine.2') : $t('service.withdrawal.0');
       break;
     }
   }
@@ -248,8 +233,8 @@ function typeText(type: number) {
         <Image :src="row.Avatar" height="30" width="30" />
       </template>
       <template #status="{ row }">
-        <Tag :color="typeColor(row.Status)">
-          {{ typeText(row.Status) }}
+        <Tag :color="typeColor(row.Status, true)">
+          {{ typeText(row.Status, true) }}
         </Tag>
       </template>
       <template #action="{ row }">

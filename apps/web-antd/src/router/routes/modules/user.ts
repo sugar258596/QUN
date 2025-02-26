@@ -92,6 +92,22 @@ const routes: RouteRecordRaw[] = [
                   import('#/views/home/user/real-name/index.vue'),
               },
               {
+                path: 'withdraw',
+                name: 'Withdraw',
+                meta: {
+                  title: $t('home.user.withdraw'),
+                },
+                component: () => import('#/views/home/user/withdraw/index.vue'),
+              },
+              {
+                path: 'point-Exchange',
+                name: 'Point-Exchange',
+                meta: {
+                  title: $t('home.user.pointExchange'),
+                },
+                component: () => import('#/views/home/user/points/index.vue'),
+              },
+              {
                 path: 'consumption-ranking',
                 name: 'ConsumptionRanking',
                 meta: {

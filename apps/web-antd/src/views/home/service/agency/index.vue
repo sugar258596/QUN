@@ -2,7 +2,7 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { UserApi } from '#/api';
+import type { OrdinaryApi } from '#/api';
 
 import { Page } from '@vben/common-ui';
 
@@ -59,7 +59,7 @@ const formOptions: VbenFormProps = {
   submitOnEnter: true,
 };
 
-const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
+const gridOptions: VxeTableGridOptions<OrdinaryApi.GetUserListResult> = {
   checkboxConfig: {
     highlight: true,
     labelField: 'Name',

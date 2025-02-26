@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import type { ServiceApi, SystemApi } from '#/api';
+import type { WithdrawApi } from '#/api';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import { message } from 'ant-design-vue';
 
-import { GetCustomerDetail, GetSelectCountryList, UpdateCustomer } from '#/api';
+import { getWithdrawDetail, postWithdrawCheck } from '#/api';
 
 defineOptions({
-  name: 'BaseDemoApplication',
+  name: 'BaseDemoConsumption',
 });
 
 const [Form, formApi] = useVbenForm({
@@ -40,17 +40,22 @@ const [Modal, modalApi] = useVbenModal({
     const { edit } = modalApi.getData<Record<string, any>>();
     if (edit) return;
     const formData = await formApi.getValues();
-    await UpdateCustomer(formData as any);
-    message.success($t('preferences.message.edit'));
+    await postWithdrawCheck(formData as any);
+    message.success($t('preferences.message.examine'));
     modalApi.close();
   },
   async onOpened() {
     const { edit, data } = modalApi.getData<Record<string, any>>();
     modalApi.setState({
-      title: edit ? $t('service.model.details') : $t('service.model.eidt'),
+      title: edit
+        ? $t('service.withdrawal.details')
+        : $t('service.withdrawal.examine'),
+      titleTooltip: edit
+        ? $t('service.withdrawal.details')
+        : $t('service.tips.examine'),
     });
     if (!data || !data.Id) return;
-    const res = await GetCustomerDetail({ Id: data.Id });
+    const res = await getWithdrawDetail({ Id: data.Id });
     if (edit) {
       handleDetails(res);
     } else {
@@ -68,7 +73,7 @@ const [Modal, modalApi] = useVbenModal({
   showCancelButton: true,
   showConfirmButton: true,
 });
-async function handleEdit(data: ServiceApi.GetCustomerApplyListResult) {
+async function handleEdit(data: WithdrawApi.WithdrawDetail) {
   const schemas = [
     {
       component: 'Input',
@@ -78,62 +83,23 @@ async function handleEdit(data: ServiceApi.GetCustomerApplyListResult) {
       label: 'Id',
     },
     {
-      component: 'Input',
-      fieldName: 'Name',
-      label: $t('preferences.user.name'),
-      defaultValue: '',
-    },
-    {
-      component: 'ApiSelect',
-      componentProps: {
-        afterFetch: (data: SystemApi.GetSeleteListResult[]) => {
-          return data.map((item) => ({
-            label: item.CountryName,
-            value: item.Id,
-          }));
-        },
-        api: GetSelectCountryList,
-      },
-      fieldName: 'CountryId',
-      label: $t('service.location'),
-    },
-    {
-      component: 'Input',
-      fieldName: 'Mobile',
-      label: $t('preferences.user.phone'),
-      defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'Email',
-      label: $t('preferences.user.email'),
-      defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'Remark',
-      label: $t('service.remark'),
-    },
-    {
-      component: 'Select',
-      componentProps: {
-        options: [
-          {
-            label: $t('service.examine.0'),
-            value: 0,
-          },
-          {
-            label: $t('service.examine.1'),
-            value: 1,
-          },
-          {
-            label: $t('service.examine.2'),
-            value: 2,
-          },
-        ],
-      },
+      component: 'Switch',
       fieldName: 'Status',
-      label: $t('service.examine.type'),
+      defaultValue: 2,
+      componentProps: {
+        class: 'w-min',
+        checkedValue: 0,
+        unCheckedValue: 2,
+      },
+      disabled: data.Status !== 1,
+      label: $t('preferences.status.type'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'Keywords',
+      defaultValue: '',
+      disabled: data.Status !== 1,
+      label: $t('service.remark'),
     },
   ];
   formApi.setState((prev) => {
@@ -143,17 +109,11 @@ async function handleEdit(data: ServiceApi.GetCustomerApplyListResult) {
   });
   formApi.setValues({
     Id: data.Id,
-    UserNick: data.UserNick,
-    Name: data.Name,
-    CountryId: data.CountryId,
-    Mobile: data.Mobile,
-    Email: data.Email,
-    Type: data.Type,
     Status: data.Status,
   });
 }
 
-async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
+async function handleDetails(data: WithdrawApi.WithdrawDetail) {
   const schemas = [
     {
       component: 'Input',
@@ -164,54 +124,69 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
     },
     {
       component: 'Input',
-      fieldName: 'MemberId',
-      label: $t('preferences.user.id'),
-      disabled: true,
-      defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'UserNick',
-      label: $t('preferences.user.nick'),
+      fieldName: 'OrderNo',
+      label: $t('preferences.order.no'),
       disabled: true,
       defaultValue: ' ',
     },
     {
-      component: 'CellImage',
-      fieldName: 'Avatar',
-      componentProps: {
-        width: 100,
-        height: 100,
-      },
-      label: $t('preferences.user.avatar'),
+      component: 'Input',
+      fieldName: 'BankCardNumber',
+      label: $t('service.bank.card'),
       disabled: true,
-      defaultValue: '',
+      defaultValue: ' ',
     },
     {
       component: 'Input',
-      fieldName: 'Name',
+      fieldName: 'CardName',
+      label: $t('service.bank.name'),
+      disabled: true,
+      defaultValue: ' ',
+    },
+
+    {
+      component: 'Input',
+      fieldName: 'RealName',
       label: $t('preferences.user.name'),
       disabled: true,
       defaultValue: '',
     },
     {
       component: 'Input',
-      fieldName: 'CountryName',
-      label: $t('service.nation'),
-      disabled: true,
-      defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'Mobile',
+      fieldName: 'PhoneNumber',
       label: $t('preferences.user.phone'),
       disabled: true,
       defaultValue: '',
     },
+
+    {
+      component: 'Select',
+      componentProps: {
+        options: [
+          {
+            label: $t('service.withdrawal.0'),
+            value: 0,
+          },
+          {
+            label: $t('service.withdrawal.1'),
+            value: 1,
+          },
+          {
+            label: $t('service.withdrawal.2'),
+            value: 2,
+          },
+        ],
+      },
+      fieldName: 'Type',
+      label: $t('service.withdrawal.type'),
+      disabled: true,
+      defaultValue: '',
+    },
+
     {
       component: 'Input',
-      fieldName: 'Email',
-      label: $t('preferences.user.email'),
+      fieldName: 'Amount',
+      label: $t('service.withdrawal.amount'),
       disabled: true,
       defaultValue: '',
     },
@@ -220,17 +195,17 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
       componentProps: {
         options: [
           {
-            label: $t('service.customer.0'),
-            value: 0,
-          },
-          {
             label: $t('service.customer.1'),
             value: 1,
           },
+          {
+            label: $t('user.plus.no'),
+            value: 0,
+          },
         ],
       },
-      fieldName: 'Type',
-      label: $t('service.customer.type'),
+      fieldName: 'IsAgency',
+      label: $t('preferences.type.user'),
       disabled: true,
       defaultValue: '',
     },
@@ -256,6 +231,16 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
       label: $t('service.examine.type'),
       disabled: true,
       defaultValue: '',
+    },
+    {
+      component: 'Upload',
+      defaultValue: [],
+      componentProps: {
+        listType: 'picture-card',
+        disabled: true,
+      },
+      fieldName: 'CollectionCode',
+      label: $t('service.bank.code'),
     },
     {
       component: 'Input',
@@ -276,18 +261,24 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
       schema: [...(prev?.schema ?? []), ...schemas],
     };
   });
+
   formApi.setValues({
     Id: data.Id,
-    MemberId: data.MemberId,
-    UserNick: data.UserNick,
-    Avatar: data.Avatar,
-    Name: data.Name,
-    Sex: data.Sex,
-    CountryName: data.CountryName,
-    Mobile: data.Mobile,
-    Email: data.Email,
+
+    OrderNo: data.OrderNo,
+    BankCardNumber: data.BankCardNumber,
+    CardName: data.CardName,
+    RealName: data.RealName,
+    PhoneNumber: data.PhoneNumber,
     Type: data.Type,
+    Amount: data.Amount,
+    IsAgency: data.IsAgency,
     Status: data.Status,
+    CollectionCode: [
+      {
+        url: data.CollectionCode,
+      },
+    ],
     AddTime: data.AddTime,
     UpdateTime: data.UpdateTime,
   });

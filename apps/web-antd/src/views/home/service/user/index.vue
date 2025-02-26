@@ -2,7 +2,7 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { UserApi } from '#/api';
+import type { OrdinaryApi } from '#/api';
 
 import { Page } from '@vben/common-ui';
 
@@ -78,7 +78,7 @@ const formOptions: VbenFormProps = {
   submitOnEnter: true,
 };
 
-const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
+const gridOptions: VxeTableGridOptions<OrdinaryApi.GetUserListResult> = {
   checkboxConfig: {
     highlight: true,
     labelField: 'Name',
@@ -108,7 +108,7 @@ const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
     },
     {
       field: 'InviteCode',
-      title: $t('user.inviteCode'),
+      title: $t('service.inviteCode'),
       slots: { default: 'code' },
     },
     { field: 'Mobile', title: $t('preferences.user.phone') },

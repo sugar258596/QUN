@@ -139,7 +139,7 @@ const gridOptions: VxeTableGridOptions<OrdinaryApi.GetUserListResult> = {
     { field: 'Score', title: $t('user.score') },
     {
       field: 'Status',
-      title: $t('preferences.user.type'),
+      title: $t('preferences.status.type'),
       slots: { default: 'status' },
     },
   ],

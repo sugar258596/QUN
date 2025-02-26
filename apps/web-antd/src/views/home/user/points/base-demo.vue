@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import type { ServiceApi, SystemApi } from '#/api';
+import type { PointsApi } from '#/api';
 
 import { useVbenForm, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import { message } from 'ant-design-vue';
 
-import { GetCustomerDetail, GetSelectCountryList, UpdateCustomer } from '#/api';
+import { getPointsDetail, postPointsCheck } from '#/api';
 
 defineOptions({
-  name: 'BaseDemoApplication',
+  name: 'BaseDemoPoints',
 });
 
 const [Form, formApi] = useVbenForm({
@@ -40,17 +40,20 @@ const [Modal, modalApi] = useVbenModal({
     const { edit } = modalApi.getData<Record<string, any>>();
     if (edit) return;
     const formData = await formApi.getValues();
-    await UpdateCustomer(formData as any);
-    message.success($t('preferences.message.edit'));
+    await postPointsCheck(formData as any);
+    message.success($t('preferences.message.examine'));
     modalApi.close();
   },
   async onOpened() {
     const { edit, data } = modalApi.getData<Record<string, any>>();
     modalApi.setState({
-      title: edit ? $t('service.model.details') : $t('service.model.eidt'),
+      title: edit ? $t('service.points.details') : $t('service.points.examine'),
+      titleTooltip: edit
+        ? $t('service.points.details')
+        : $t('service.tips.examine'),
     });
     if (!data || !data.Id) return;
-    const res = await GetCustomerDetail({ Id: data.Id });
+    const res = await getPointsDetail({ Id: data.Id });
     if (edit) {
       handleDetails(res);
     } else {
@@ -68,7 +71,7 @@ const [Modal, modalApi] = useVbenModal({
   showCancelButton: true,
   showConfirmButton: true,
 });
-async function handleEdit(data: ServiceApi.GetCustomerApplyListResult) {
+async function handleEdit(data: PointsApi.PointsDetailDetailResult) {
   const schemas = [
     {
       component: 'Input',
@@ -78,62 +81,23 @@ async function handleEdit(data: ServiceApi.GetCustomerApplyListResult) {
       label: 'Id',
     },
     {
-      component: 'Input',
-      fieldName: 'Name',
-      label: $t('preferences.user.name'),
-      defaultValue: '',
-    },
-    {
-      component: 'ApiSelect',
-      componentProps: {
-        afterFetch: (data: SystemApi.GetSeleteListResult[]) => {
-          return data.map((item) => ({
-            label: item.CountryName,
-            value: item.Id,
-          }));
-        },
-        api: GetSelectCountryList,
-      },
-      fieldName: 'CountryId',
-      label: $t('service.location'),
-    },
-    {
-      component: 'Input',
-      fieldName: 'Mobile',
-      label: $t('preferences.user.phone'),
-      defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'Email',
-      label: $t('preferences.user.email'),
-      defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'Remark',
-      label: $t('service.remark'),
-    },
-    {
-      component: 'Select',
-      componentProps: {
-        options: [
-          {
-            label: $t('service.examine.0'),
-            value: 0,
-          },
-          {
-            label: $t('service.examine.1'),
-            value: 1,
-          },
-          {
-            label: $t('service.examine.2'),
-            value: 2,
-          },
-        ],
-      },
+      component: 'Switch',
       fieldName: 'Status',
-      label: $t('service.examine.type'),
+      defaultValue: 2,
+      componentProps: {
+        class: 'w-min',
+        checkedValue: 0,
+        unCheckedValue: 2,
+      },
+      disabled: data.Status !== 1,
+      label: $t('preferences.status.type'),
+    },
+    {
+      component: 'Input',
+      fieldName: 'Keywords',
+      defaultValue: '',
+      disabled: data.Status !== 1,
+      label: $t('service.remark'),
     },
   ];
   formApi.setState((prev) => {
@@ -143,17 +107,11 @@ async function handleEdit(data: ServiceApi.GetCustomerApplyListResult) {
   });
   formApi.setValues({
     Id: data.Id,
-    UserNick: data.UserNick,
-    Name: data.Name,
-    CountryId: data.CountryId,
-    Mobile: data.Mobile,
-    Email: data.Email,
-    Type: data.Type,
     Status: data.Status,
   });
 }
 
-async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
+async function handleDetails(data: PointsApi.PointsDetailDetailResult) {
   const schemas = [
     {
       component: 'Input',
@@ -166,40 +124,26 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
       component: 'Input',
       fieldName: 'MemberId',
       label: $t('preferences.user.id'),
-      disabled: true,
       defaultValue: '',
+      disabled: true,
     },
     {
       component: 'Input',
       fieldName: 'UserNick',
       label: $t('preferences.user.nick'),
+      defaultValue: '',
       disabled: true,
-      defaultValue: ' ',
     },
     {
       component: 'CellImage',
-      fieldName: 'Avatar',
       componentProps: {
         width: 100,
         height: 100,
       },
+      fieldName: 'Avatar',
       label: $t('preferences.user.avatar'),
-      disabled: true,
       defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'Name',
-      label: $t('preferences.user.name'),
       disabled: true,
-      defaultValue: '',
-    },
-    {
-      component: 'Input',
-      fieldName: 'CountryName',
-      label: $t('service.nation'),
-      disabled: true,
-      defaultValue: '',
     },
     {
       component: 'Input',
@@ -210,30 +154,49 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
     },
     {
       component: 'Input',
-      fieldName: 'Email',
-      label: $t('preferences.user.email'),
+      fieldName: 'ScoreProductId',
+      label: $t('service.points.id'),
       disabled: true,
       defaultValue: '',
     },
     {
-      component: 'Select',
-      componentProps: {
-        options: [
-          {
-            label: $t('service.customer.0'),
-            value: 0,
-          },
-          {
-            label: $t('service.customer.1'),
-            value: 1,
-          },
-        ],
-      },
-      fieldName: 'Type',
-      label: $t('service.customer.type'),
+      component: 'Input',
+      fieldName: 'ScoreProductTitle',
+      label: $t('service.points.title'),
       disabled: true,
       defaultValue: '',
     },
+    {
+      component: 'Input',
+      fieldName: 'Consignee',
+      label: $t('service.address.name'),
+      disabled: true,
+      defaultValue: '',
+    },
+    {
+      component: 'Input',
+      fieldName: 'AreaText',
+      label: $t('service.address.area'),
+      disabled: true,
+      defaultValue: '',
+    },
+
+    {
+      component: 'Input',
+      fieldName: 'Address',
+      label: $t('service.address.detail'),
+      disabled: true,
+      defaultValue: '',
+    },
+
+    {
+      component: 'Input',
+      fieldName: 'Remark',
+      label: $t('service.remark'),
+      disabled: true,
+      defaultValue: '',
+    },
+
     {
       component: 'Select',
       componentProps: {
@@ -257,6 +220,7 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
       disabled: true,
       defaultValue: '',
     },
+
     {
       component: 'Input',
       fieldName: 'AddTime',
@@ -276,17 +240,19 @@ async function handleDetails(data: ServiceApi.GetCustomerApplyListResult) {
       schema: [...(prev?.schema ?? []), ...schemas],
     };
   });
+
   formApi.setValues({
     Id: data.Id,
     MemberId: data.MemberId,
     UserNick: data.UserNick,
     Avatar: data.Avatar,
-    Name: data.Name,
-    Sex: data.Sex,
-    CountryName: data.CountryName,
     Mobile: data.Mobile,
-    Email: data.Email,
-    Type: data.Type,
+    ScoreProductId: data.ScoreProductId,
+    ScoreProductTitle: data.ScoreProductTitle,
+    Consignee: data.Consignee,
+    AreaText: data.AreaText,
+    Address: data.Address,
+    Remark: data.Remark,
     Status: data.Status,
     AddTime: data.AddTime,
     UpdateTime: data.UpdateTime,

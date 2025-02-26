@@ -10,7 +10,6 @@
     "password": "密码",
     "role": "角色",
     "status": "状态",
-    "type": "类型",
     "phone": "手机号",
     "email": "邮箱",
     "remark": "备注",
@@ -38,7 +37,8 @@
   "message": {
     "add": "添加成功",
     "edit": "编辑成功",
-    "delete": "删除成功"
+    "delete": "删除成功",
+    "examine": "审核成功"
   },
   "type": {
     "account": "账号类型",

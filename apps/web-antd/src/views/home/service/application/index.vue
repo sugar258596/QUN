@@ -2,7 +2,7 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { UserApi } from '#/api';
+import type { OrdinaryApi } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
@@ -109,7 +109,7 @@ const formOptions: VbenFormProps = {
   submitOnEnter: true,
 };
 
-const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
+const gridOptions: VxeTableGridOptions<OrdinaryApi.GetUserListResult> = {
   checkboxConfig: {
     highlight: true,
   },
@@ -134,7 +134,7 @@ const gridOptions: VxeTableGridOptions<UserApi.GetUserListResult> = {
     { field: 'Email', title: $t('preferences.user.email'), width: 160 },
     {
       field: 'Type',
-      title: $t('service.type'),
+      title: $t('service.customer.type'),
       slots: { default: 'type' },
       width: 80,
     },

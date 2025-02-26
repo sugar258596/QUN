@@ -26,7 +26,7 @@ enum Api {
   /** 获取实名详情 */
   GET_REAL_NAME_DETAIL = '/api/RealName/RealNameDetails',
   /** 获取实名制列表 */
-  GET_REAL_NAME_LIST = '/api/RealName/CustomerServiceList',
+  GET_REAL_NAME_LIST = '/api/RealName/RealNameList',
   /** 实名制审核 */
   POST_REAL_NAME_CHECK = '/api/RealName/IdentityVerificationIs',
 }

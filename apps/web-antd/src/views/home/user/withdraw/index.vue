@@ -6,10 +6,10 @@ import type { RealNameApi } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import { Button, Image, Tag } from 'ant-design-vue';
+import { Button, Tag } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getRealNameList } from '#/api';
+import { getWithdrawList } from '#/api';
 import { $t } from '#/locales';
 
 import BaseDemo from './base-demo.vue';
@@ -21,7 +21,7 @@ const formOptions: VbenFormProps = {
     {
       component: 'Input',
       componentProps: {
-        placeholder: $t('service.tips.application'),
+        placeholder: $t('service.tips.withdraw'),
       },
       fieldName: 'Keywords',
       label: $t('preferences.button.inquire'),
@@ -61,11 +61,15 @@ const formOptions: VbenFormProps = {
         allowClear: true,
         options: [
           {
-            label: $t('preferences.user.sex.male'),
+            label: $t('service.withdrawal.0'),
             value: 0,
           },
           {
-            label: $t('preferences.user.sex.female'),
+            label: $t('service.withdrawal.1'),
+            value: 1,
+          },
+          {
+            label: $t('service.withdrawal.2'),
             value: 1,
           },
           {
@@ -76,7 +80,7 @@ const formOptions: VbenFormProps = {
         placeholder: $t('preferences.user.sex.type'),
       },
       fieldName: 'Type',
-      label: $t('preferences.user.sex.type'),
+      label: $t('preferences.type.type'),
     },
     {
       component: 'RangePicker',
@@ -116,12 +120,34 @@ const gridOptions: VxeTableGridOptions<RealNameApi.RealNameListResult> = {
   },
   columns: [
     { field: 'MemberId', title: $t('preferences.user.id'), width: 80 },
-    { field: 'UserNick', title: $t('preferences.user.nick'), width: 140 },
+    { field: 'OrderNo', title: $t('preferences.order.no'), width: 200 },
     {
-      field: 'Avatar',
-      title: $t('preferences.user.avatar'),
-      slots: { default: 'image-url' },
-      width: 180,
+      field: 'RealName',
+      title: $t('preferences.user.name'),
+      width: 80,
+    },
+
+    {
+      field: 'PhoneNumber',
+      title: $t('preferences.user.phone'),
+      width: 120,
+    },
+    {
+      field: 'Type',
+      title: $t('service.withdrawal.type'),
+      slots: { default: 'type' },
+      width: 120,
+    },
+    {
+      field: 'UserType',
+      title: $t('preferences.type.user'),
+      slots: { default: 'use-type' },
+      width: 120,
+    },
+    {
+      field: 'Amount',
+      title: $t('service.withdrawal.amount'),
+      width: 100,
     },
     {
       field: 'Status',
@@ -129,12 +155,6 @@ const gridOptions: VxeTableGridOptions<RealNameApi.RealNameListResult> = {
       slots: { default: 'status' },
       width: 140,
     },
-    {
-      field: 'UserName',
-      title: $t('preferences.user.name'),
-      width: 140,
-    },
-    { field: 'ReviewComments', title: $t('service.remark'), width: 140 },
     { field: 'AddTime', title: $t('preferences.time.apply'), width: 140 },
     { field: 'UpdateTime', title: $t('preferences.time.audit'), width: 140 },
     {
@@ -151,7 +171,7 @@ const gridOptions: VxeTableGridOptions<RealNameApi.RealNameListResult> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        const res = await getRealNameList({
+        const res = await getWithdrawList({
           Page: page.currentPage,
           PageSize: page.pageSize,
           ...formValues,
@@ -194,46 +214,46 @@ function handleExamine(data: any, edit?: boolean) {
   sharedModalApi.open();
 }
 
-function typeColor(type: number) {
+function typeColor(type: number, flag?: boolean) {
   let color = '';
   switch (type) {
     case 0: {
-      color = '#87d068';
+      color = flag ? '#87d068' : 'cyan';
       break;
     }
     case 1: {
-      color = '#2db7f5';
+      color = flag ? '#2db7f5' : 'processing';
       break;
     }
     case 2: {
-      color = '#f50';
+      color = flag ? '#f50' : 'green';
       break;
     }
     default: {
-      color = '#2db7f5';
+      color = flag ? '#f50' : 'cyan';
       break;
     }
   }
   return color;
 }
 
-function typeText(type: number) {
+function typeText(type: number, flag?: boolean) {
   let text = '';
   switch (type) {
     case 0: {
-      text = $t('service.examine.0');
+      text = flag ? $t('service.examine.0') : $t('service.withdrawal.0');
       break;
     }
     case 1: {
-      text = $t('service.examine.1');
+      text = flag ? $t('service.examine.1') : $t('service.withdrawal.1');
       break;
     }
     case 2: {
-      text = $t('service.examine.2');
+      text = flag ? $t('service.examine.2') : $t('service.withdrawal.2');
       break;
     }
     default: {
-      text = $t('service.examine.2');
+      text = flag ? $t('service.examine.2') : $t('service.withdrawal.0');
       break;
     }
   }
@@ -244,12 +264,19 @@ function typeText(type: number) {
 <template>
   <Page auto-content-height>
     <Grid>
-      <template #image-url="{ row }">
-        <Image :src="row.Avatar" height="30" width="30" />
+      <template #use-type="{ row }">
+        <Tag :color="row.UserType.includes('客服') ? 'volcano' : 'gold'">
+          {{ row.UserType }}
+        </Tag>
+      </template>
+      <template #type="{ row }">
+        <Tag :color="typeColor(row.Type)">
+          {{ typeText(row.Type) }}
+        </Tag>
       </template>
       <template #status="{ row }">
-        <Tag :color="typeColor(row.Status)">
-          {{ typeText(row.Status) }}
+        <Tag :color="typeColor(row.Status, true)">
+          {{ typeText(row.Status, true) }}
         </Tag>
       </template>
       <template #action="{ row }">
